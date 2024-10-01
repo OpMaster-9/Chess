@@ -81,7 +81,7 @@ public class Main {
     } catch (InterruptedException e) {
     throw new RuntimeException(e);
     }
-    isWhite = true;
+    isWhite = true; gelg
     }*/
     //}
   }
