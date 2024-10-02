@@ -173,7 +173,7 @@ public class GUI{
                                 }
                             }
                             //System.out.println(Arrays.toString(test.calculateBestMove(Main.brett, Main.amZug)));
-                            /*if (Main.amZug == 1 && bot) {
+                            if (Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
                                     botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 3, false),3);
@@ -190,7 +190,7 @@ public class GUI{
                                 if (Main.amZug == 0){
                                     bot = true;
                                 }
-                            }*/
+                            }
                         }
                     }
                 });

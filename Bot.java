@@ -132,64 +132,98 @@ public class Bot {
     return bestMove;
   }
   public int[] miniMax(int[] input, int colour, int depth, boolean isMaximizingPlayer) {
-    System.out.println("yessir");
+    System.out.println("1");
     // Abbruchbedingung: Wenn die maximale Tiefe erreicht ist, evaluiere das Board
     if (depth == 0) {
-      return new int[]{evaluateBoard(input, colour), calculateBestMove(input,colour)[0], calculateBestMove(input,colour)[1]}; // Bewertung + Dummy-Zug
+      System.out.println("2");
+      System.out.println(Arrays.toString(new int[]{evaluateBoard(input, colour)}));
+      System.out.println(colour);
+      return new int[]{evaluateBoard(input, colour)}; // Bewertung + Dummy-Zug
     }
-    
+
+    System.out.println("3");
     int bestEval;
+    System.out.println("4");
     int[] bestMove = new int[2]; // Der beste Zug des Spielers
+    System.out.println("5");
     if (isMaximizingPlayer) {
+      System.out.println("6");
       bestEval = Integer.MIN_VALUE; // Maximale Bewertung für den Spieler
     } else {
+      System.out.println("7");
       bestEval = Integer.MAX_VALUE; // Minimale Bewertung für den Gegner
     }
     
     // Erzeuge alle möglichen Züge für den aktuellen Spieler
     List<int[]> possibleMoves = allMoves(input, colour);
+    System.out.println("8");
     if (possibleMoves.isEmpty()) {
-      System.out.println("Critical Error");
+      System.out.println("9");
+      //System.out.println("Critical Error");
     }
     for (int[] move : possibleMoves) {
+      System.out.println("10");
       for (int j = 1; j < move.length; j++) {
-        System.out.println("Schleife");
+        System.out.println("11");
+        //System.out.println("Schleife");
         int[] tempBoard = Arrays.copyOf(input, input.length);
+        System.out.println("12");
         Main.moveWithoutCheck(tempBoard, move[0], move[j], colour);
+        System.out.println("13");
         
         // Prüfe, ob der Zug den eigenen König in Schach setzen würde
         if (!Main.check(tempBoard, Main.findKing(tempBoard, colour), colour)) {
+          System.out.println("14");
           int opponentColour = 0;
+          System.out.println("15");
           if (colour == 0) {
+            System.out.println("16");
             opponentColour = 1;
           } // end of if
           
           // Rekursiver Aufruf mit reduzierter Tiefe und wechselndem Spieler
+          System.out.println("16a");
           int[] result = miniMax(tempBoard, opponentColour, depth - 1, !isMaximizingPlayer);
+          System.out.println("17");
           int currentEval = result[0];
+          System.out.println("18");
           //if (depth > 2) {
-            System.out.println(depth + " " + Main.zahlZuFeld(move[0]) + " " + Main.zahlZuFeld(move[1]) + " " + currentEval + " " + bestEval);
+          //System.out.println(depth + " " + Main.zahlZuFeld(move[0]) + " " + Main.zahlZuFeld(move[1]) + " " + currentEval + " " + bestEval);
           //}
           // Maximierer (Spieler)
           if (isMaximizingPlayer) {
+            System.out.println("19");
             if (currentEval > bestEval) {
+              System.out.println("20");
               bestEval = currentEval;
+              System.out.println("21");
               bestMove[0] = move[0]; // Startposition des besten Zuges
+              System.out.println("22");
               bestMove[1] = move[j]; // Zielposition des besten Zuges
+              System.out.println("23");
             }
           }
           // Minimierer (Gegner)
           else {
+            System.out.println("24");
             if (currentEval < bestEval) {
+              System.out.println("25");
               bestEval = currentEval;
+              System.out.println("26");
               bestMove[0] = move[0]; // Startposition des besten Zuges
+              System.out.println("27");
               bestMove[1] = move[j]; // Zielposition des besten Zuges
+              System.out.println("28");
             }
           }
+        }else {
+          System.out.println("Schach");
+          System.out.println(j + " " + move.length);
         }
       }
     }
     // Rückgabe der besten Bewertung und des besten Zugs
+    System.out.println("29");
     return new int[]{bestEval, bestMove[0], bestMove[1]};
   }
   public int[] miniMaxBeta(int[] input, int colour, int depth, boolean isMaximizingPlayer) throws InterruptedException, ExecutionException {
