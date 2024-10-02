@@ -21,8 +21,9 @@ public class MovementCheck {
             if (input[pos1 + 9] > 6) {
               wohin.add(pos1 + 9);
             } else {
-              if ((pos1 - 4) % 8 == 0 && input[pos1 + 9] == 0 && input[pos1 + 8] == 12 && Main.letzte[pos1 + 10] == 12 && Main.brett[pos1 + 10] == 0)
+              if ((pos1 - 4) % 8 == 0 && input[pos1 + 9] == 0 && input[pos1 + 8] == 12 && Main.letzte[pos1 + 10] == 12 && Main.brett[pos1 + 10] == 0) {
                 wohin.add(pos1 + 9);
+              }
             }
           } catch (Exception ignored) {
           }
@@ -30,8 +31,9 @@ public class MovementCheck {
             if (input[pos1 - 7] != 0 && input[pos1 - 7] > 6) {
               wohin.add(pos1 - 7);
             } else {
-              if ((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && Main.letzte[pos1 - 6] == 12 && Main.brett[pos1 - 6] == 0)
+              if ((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && Main.letzte[pos1 - 6] == 12 && Main.brett[pos1 - 6] == 0) {
                 wohin.add(pos1 - 7);
+              }
             }
           } catch (Exception ignored) {
           }
@@ -49,8 +51,9 @@ public class MovementCheck {
             if (input[pos1 + 7] != 0 && input[pos1 + 7] < 7) {
               wohin.add(pos1 + 7);
             } else {
-              if ((pos1 - 3) % 8 == 0 && input[pos1 + 7] == 0 && input[pos1 + 8] == 6 && Main.letzte[pos1 + 6] == 6 && input[pos1 + 6] == 0)
+              if ((pos1 - 3) % 8 == 0 && input[pos1 + 7] == 0 && input[pos1 + 8] == 6 && Main.letzte[pos1 + 6] == 6 && input[pos1 + 6] == 0) {
                 wohin.add(pos1 + 7);
+              }
             }
           } catch (Exception ignored) {
           }
@@ -58,7 +61,7 @@ public class MovementCheck {
             if (input[pos1 - 9] != 0 && input[pos1 - 9] < 7) {
               wohin.add(pos1 - 9);
             } else {
-              if (((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && Main.letzte[pos1 - 10] == 6 && input[pos1 + 6] == 0)){
+              if ((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && Main.letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0){
                 wohin.add(pos1 - 9);
               }
             }

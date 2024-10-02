@@ -19,6 +19,7 @@ public class GUI{
     private static JButton[] feld = new JButton[64];
     private static boolean bot = true;
     private static int[] botMove = new int[3];
+    private static boolean refresh = false;
     public static void GUI(){
         JFrame fenster = new JFrame();
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,8 +112,11 @@ public class GUI{
                             } else {
                                 feld2 = index;
                                 feld1_b = true;
-                                Main.letzte = Arrays.copyOf(Main.brett,Main.brett.length);
+                                int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
                                 Main.brett = Main.move(Main.brett, feld1, feld2);
+                                if (Main.richtig) {
+                                    Main.letzte = Arrays.copyOf(temp, temp.length);
+                                }
                                 for (int k = 0; k < 64; k++) {
                                     int l = k;
                                     if ((k >= 8 && k < 16) || (k >= 24 && k < 32) || (k >= 40 && k < 48) || k >= 56){
@@ -128,7 +132,6 @@ public class GUI{
                             if (Main.richtig && feld1_b) {
                                 if (Main.amZug == 0) {
                                     Main.amZug = 1;
-                                    System.arraycopy(Main.brett, 0, Main.letzte, 0, 64);
                                 } else {
                                     Main.amZug = 0;
                                 }
@@ -172,17 +175,16 @@ public class GUI{
                                     }
                                 }
                             }
-                            //System.out.println(Arrays.toString(test.calculateBestMove(Main.brett, Main.amZug)));
-                            if (Main.amZug == 1 && bot) {
+                             if(Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
                                     botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, false,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
-                                    System.out.println(botMove[0]);
-                                    System.out.println(Main.zahlZuFeld(botMove[1]));
-                                    System.out.println(Main.zahlZuFeld(botMove[2]));
                                     GUI.pressButton(botMove[1]);
                                     GUI.pressButton(botMove[2]);
                                     System.out.println("Berechnet.");
+                                    System.out.println(botMove[0]);
+                                    System.out.println(Main.zahlZuFeld(botMove[1]));
+                                    System.out.println(Main.zahlZuFeld(botMove[2]));
                                 });
                                 thread.start();
 
