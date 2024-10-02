@@ -67,7 +67,6 @@ public class Bot {
     return allMoves;
   }
   public int[] miniMax(int[] input, int colour, int depth, boolean isMaximizingPlayer, int alpha, int beta) {
-    System.out.println("gelg");
     if (depth == 0) {
       return new int[]{evaluateBoard(input, colour)};
     }

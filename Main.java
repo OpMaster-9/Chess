@@ -394,7 +394,11 @@ public class Main {
           int[] wbewegung_r = {1, -1};
           for (int i = 0; i < 2; i++) {
             wrook_b = true;
-            wrook = 0;
+            if ((pos + wrook + wlimits_r[i]) % 8 == 0){
+              wrook = wbewegung_r[i];
+            }else {
+              wrook = 0;
+            }
             while (wrook_b) {
               if (pos + wrook < 0 || pos + wrook > 63) {
                 break;
@@ -594,7 +598,11 @@ public class Main {
           int[] wbewegung_r = {1, -1};
           for (int i = 0; i < 2; i++) {
             wrook_b = true;
-            wrook = 0;
+            if ((pos + wrook + wlimits_r[i]) % 8 == 0){
+              wrook = wbewegung_r[i];
+            }else {
+              wrook = 0;
+            }
             while (wrook_b) {
               if (pos + wrook < 0 || pos + wrook > 63) {
                 break;
