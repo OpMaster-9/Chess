@@ -5,8 +5,6 @@ import java.util.List;
 public class MovementCheck {
   public static boolean[] hasMoved = {false,false,false,false,false,false};
   public static List<Integer> wohinGehtBittiBitti(int[] input, int pos1, int colour){
-    System.out.println(Main.zahlZuFeld(pos1) + colour);
-    System.out.println(input[pos1]);
     List<Integer> wohin = new ArrayList<Integer>();
     int[] springer = {-17,-15,-10,-6,6,10,15,17};
     switch (input[pos1]) {
@@ -439,7 +437,7 @@ public class MovementCheck {
             }
           }
           try {
-            if ((!hasMoved[3] && !hasMoved[4]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && (Main.check(input, pos1, colour) && Main.check(input, pos1 - 8, colour) && Main.check(input, pos1 - 16, colour))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
+            if ((!hasMoved[3] && !hasMoved[4]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && !(Main.check(input, pos1, colour) && Main.check(input, pos1 - 8, colour) && Main.check(input, pos1 - 16, colour))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
               if ((Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) {
               } else {
                 wohin.add(pos1 - 16);
@@ -447,7 +445,7 @@ public class MovementCheck {
             }
           }catch (Exception ignored){}
           try {
-            if ((!hasMoved[3] && !hasMoved[5]) && (input[pos1 + 8] == 0 && input[pos1 + 16] == 0) && (Main.check(input, pos1, 1) && Main.check(input, pos1 + 8, 1) && Main.check(input, pos1 + 16, 1))) { //GELGUS
+            if ((!hasMoved[3] && !hasMoved[5]) && (input[pos1 + 8] == 0 && input[pos1 + 16] == 0) && !(Main.check(input, pos1, 1) && Main.check(input, pos1 + 8, 1) && Main.check(input, pos1 + 16, 1))) { //GELGUS
               if ((Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) {
               } else {
                 wohin.add(pos1 + 16);
@@ -483,7 +481,7 @@ public class MovementCheck {
             }
           }
           try {
-            if ((!hasMoved[0] && !hasMoved[1]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && (Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
+            if ((!hasMoved[0] && !hasMoved[1]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && !(Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
               if ((Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) {
               } else {
                 wohin.add(pos1 - 16);
@@ -491,7 +489,7 @@ public class MovementCheck {
             }
           }catch (Exception ignored){}
           try {
-            if (!hasMoved[0] && !hasMoved[2] && input[pos1 + 8] == 0 && input[pos1 + 16] == 0) { //GELGUS
+            if (!hasMoved[0] && !hasMoved[2] && input[pos1 + 8] == 0 && input[pos1 + 16] == 0 && !(Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) { //GELGUS
               if ((Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) {
               } else {
                 wohin.add(pos1 + 16);
