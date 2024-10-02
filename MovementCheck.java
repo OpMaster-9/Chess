@@ -5,6 +5,8 @@ import java.util.List;
 public class MovementCheck {
   public static boolean[] hasMoved = {false,false,false,false,false,false};
   public static List<Integer> wohinGehtBittiBitti(int[] input, int pos1, int colour){
+    System.out.println(Main.zahlZuFeld(pos1) + colour);
+    System.out.println(input[pos1]);
     List<Integer> wohin = new ArrayList<Integer>();
     int[] springer = {-17,-15,-10,-6,6,10,15,17};
     switch (input[pos1]) {
@@ -120,8 +122,7 @@ public class MovementCheck {
               if ((pos1 + rook + limits_r[i]) % 8 != 0) {
                 rook = rook + bewegung_r[i];
               }
-              try {
-                if (pos1 + rook < 0 || pos1 + rook > 64) {
+                if (pos1 + rook < 0 || pos1 + rook > 63) {
                   break;
                 }
                 if ((pos1 + rook + limits_r[i]) % 8 == 0 || input[pos1 + rook] != 0) {
@@ -132,8 +133,6 @@ public class MovementCheck {
                 } else {
                   wohin.add(pos1 + rook);
                 }
-              } catch (Exception ignored) {
-              }
             }
           }
           rook = 0;
@@ -171,8 +170,7 @@ public class MovementCheck {
               if ((pos1 + wrook + wlimits_r[i]) % 8 != 0) {
                 wrook = wrook + wbewegung_r[i];
               }
-              try {
-                if (pos1 + wrook < 0 || pos1 + wrook > 64) {
+                if (pos1 + wrook < 0 || pos1 + wrook > 63) {
                   break;
                 }
                 if ((pos1 + wrook + wlimits_r[i]) % 8 == 0 || input[pos1 + wrook] != 0) {
@@ -183,8 +181,6 @@ public class MovementCheck {
                 } else {
                   wohin.add(pos1 + wrook);
                 }
-              } catch (Exception ignored) {
-              }
             }
           }
           wrook = 0;
@@ -222,8 +218,7 @@ public class MovementCheck {
               bishop = bishop + bewegung_b[i];
             }
             while (bishop_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
-              try {
-                if (pos1 + bishop < 0 || pos1 + bishop > 64) {
+                if (pos1 + bishop < 0 || pos1 + bishop > 63) {
                   break;
                 }
                 if ((pos1 + bishop + limits_b[i]) % 8 == 0 || input[pos1 + bishop] != 0) {
@@ -235,8 +230,6 @@ public class MovementCheck {
                   wohin.add(pos1 + bishop);
                 }
                 bishop = bishop + bewegung_b[i];
-              } catch (Exception ignored) {
-              }
             }
           }
         }
@@ -254,8 +247,7 @@ public class MovementCheck {
               wbishop = wbishop + wbewegung[i];
             }
             while (wbishop_b) {   //Algorithmus zur Ausrechnung der Felder des Bischofs
-              try {
-                if (pos1 + wbishop < 0 || pos1 + wbishop > 64) {
+                if (pos1 + wbishop < 0 || pos1 + wbishop > 63) {
                   break;
                 }
                 if ((pos1 + wbishop + wlimits[i]) % 8 == 0 || input[pos1 + wbishop] != 0) {
@@ -270,8 +262,6 @@ public class MovementCheck {
                   wohin.add(pos1 + wbishop);
                 }
                 wbishop = wbishop + wbewegung[i];
-              } catch (Exception ignored) {
-              }
             }
           }
         }
@@ -289,16 +279,13 @@ public class MovementCheck {
               dame = dame + bewegung_d[i];
             }
             while (dame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
-              if (pos1 + dame < 0 || pos1 + dame > 64) {
+              if (pos1 + dame < 0 || pos1 + dame > 63) {
                 break;
               }
               if ((pos1 + dame + limits_d[i]) % 8 == 0 || input[pos1 + dame] != 0) {
-                try {
                   if (input[pos1 + dame] > 6 || input[pos1 + dame] == 0) {
                     wohin.add(pos1 + dame);
                   }
-                }catch(Exception ignored){
-                }
                 dame_b = false;
               } else {
                 wohin.add(pos1 + dame);
@@ -317,8 +304,7 @@ public class MovementCheck {
               if ((pos1 + queen + limits_q[i]) % 8 != 0){
                 queen = queen + bewegung_q[i];
               }
-              try {
-                if(pos1 + queen < 0 || pos1 + queen > 64){
+                if(pos1 + queen < 0 || pos1 + queen > 63){
                   break;
                 }
                 if ((pos1 + queen + limits_q[i]) % 8 == 0 || input[pos1 + queen] != 0) {
@@ -329,7 +315,6 @@ public class MovementCheck {
                 } else {
                   wohin.add(pos1 + queen);
                 }
-              }catch (Exception ignored){}
             }
           }
           queen = 0;
@@ -367,15 +352,13 @@ public class MovementCheck {
               wdame = wdame + wbewegung_d[i];
             }
             while (wdame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
-              if (pos1 + wdame < 0 || pos1 + wdame > 64) {
+              if (pos1 + wdame < 0 || pos1 + wdame > 63) {
                 break;
               }
               if ((pos1 + wdame + wlimits_d[i]) % 8 == 0 || input[pos1 + wdame] != 0) {
-                try {
                   if (input[pos1 + wdame] < 7 || input[pos1 + wdame] == 0) {
                     wohin.add(pos1 + wdame);
                   }
-                }catch (Exception ignored){}
                 wdame_b = false;
               } else {
                 wohin.add(pos1 + wdame);
@@ -394,8 +377,7 @@ public class MovementCheck {
               if ((pos1 + wqueen + wlimits_q[i]) % 8 != 0) {
                 wqueen = wqueen + wbewegung_q[i];
               }
-              try {
-                if (pos1 + wqueen < 0 || pos1 + wqueen > 64) {
+                if (pos1 + wqueen < 0 || pos1 + wqueen > 63) {
                   break;
                 }
                 if ((pos1 + wqueen + wlimits_q[i]) % 8 == 0 || input[pos1 + wqueen] != 0) {
@@ -406,7 +388,6 @@ public class MovementCheck {
                 } else {
                   wohin.add(pos1 + wqueen);
                 }
-              }catch (Exception ignored){}
             }
           }
           wqueen = 0;
