@@ -176,7 +176,7 @@ public class GUI{
                             if (Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
-                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 3, false),3);
+                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, false,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
                                     System.out.println(botMove[0]);
                                     System.out.println(Main.zahlZuFeld(botMove[1]));
                                     System.out.println(Main.zahlZuFeld(botMove[2]));
