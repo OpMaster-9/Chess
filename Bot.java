@@ -8,7 +8,7 @@ public class Bot {
 
 
   }
-  private int evaluateBoard(int[] board, int colour) {
+  private static int evaluateBoard(int[] board, int colour) {
     int score = 0;
     List<Integer> figures = new ArrayList<>();
     for (int j : board) {
@@ -70,40 +70,34 @@ public class Bot {
     if (depth == 0) {
       return new int[]{evaluateBoard(input, colour)};
     }
-
     int bestEval;
-    int[] bestMove = new int[2];
+    int[] bestMove = {-1, -1};
     if (isMaximizingPlayer) {
       bestEval = Integer.MIN_VALUE;
     } else {
       bestEval = Integer.MAX_VALUE;
     }
-
     List<int[]> possibleMoves = allMoves(input, colour);
     if (possibleMoves.isEmpty()) {
       System.out.println("Allmoves empty error");
+      return new int[]{bestEval, -1, -1};
     }
-
     for (int[] move : possibleMoves) {
       for (int j = 1; j < move.length; j++) {
         int[] tempBoard = Arrays.copyOf(input, input.length);
         Main.moveWithoutCheck(tempBoard, move[0], move[j], colour);
-
         if (!Main.check(tempBoard, Main.findKing(tempBoard, colour), colour)) {
           int opponentColour = (colour == 0) ? 1 : 0;
-
           int[] result = miniMax(tempBoard, opponentColour, depth - 1, !isMaximizingPlayer, alpha, beta);
           int currentEval = result[0];
-
           if (isMaximizingPlayer) {
             if (currentEval > bestEval) {
               bestEval = currentEval;
               bestMove[0] = move[0];
               bestMove[1] = move[j];
             }
-            alpha = Math.max(alpha, bestEval);  // Update alpha for maximizer
+            alpha = Math.max(alpha, bestEval);
             if (beta <= alpha) {
-              // Prune the remaining branches
               break;
             }
           } else {
@@ -112,22 +106,19 @@ public class Bot {
               bestMove[0] = move[0];
               bestMove[1] = move[j];
             }
-            beta = Math.min(beta, bestEval);  // Update beta for minimizer
+            beta = Math.min(beta, bestEval);
             if (beta <= alpha) {
-              // Prune the remaining branches
               break;
             }
           }
         }
       }
-      // If beta cut-off happened, break out of the outer loop as well.
       if (beta <= alpha) {
         break;
       }
     }
     return new int[]{bestEval, bestMove[0], bestMove[1]};
   }
-
   public int[] calculateBestMove(int[] input, int colour){
     int bestEval = Integer.MIN_VALUE;
     int[] bestMove = new int[2];

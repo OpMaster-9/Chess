@@ -179,12 +179,12 @@ public class GUI{
                                 bot = false;
                                 Thread thread = new Thread(() -> {
                                     botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, false,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
-                                    GUI.pressButton(botMove[1]);
-                                    GUI.pressButton(botMove[2]);
-                                    System.out.println("Berechnet.");
                                     System.out.println(botMove[0]);
                                     System.out.println(Main.zahlZuFeld(botMove[1]));
                                     System.out.println(Main.zahlZuFeld(botMove[2]));
+                                    GUI.pressButton(botMove[1]);
+                                    GUI.pressButton(botMove[2]);
+                                    System.out.println("Berechnet.");
                                 });
                                 thread.start();
 

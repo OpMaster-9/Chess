@@ -121,43 +121,45 @@ public class Main {
           }
           input[pos1] = 0;
         }else {
-          if ((input[pos1] == 6 && (((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && letzte[pos1 - 6] == 12 && brett[pos1 - 6] == 0) || ((pos1 - 4) % 8 == 0 && input[pos1 + 9] == 0 && input[pos1 + 8] == 12 && letzte[pos1 + 10] == 12 && brett[pos1 + 10] == 0))) || (input[pos1] == 12 && (((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0) || ((pos1 - 3) % 8 == 0 && input[pos1 + 7] == 0 && input[pos1 + 8] == 6 && letzte[pos1 + 6] == 6 && input[pos1 + 6] == 0)))) {//AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-            if (input[pos1] == 6){
-              if ((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && letzte[pos1 - 6] == 12 && brett[pos1 - 6] == 0){
-                input[pos1 - 8] = 0;
-              }else {
-                input[pos1 + 8] = 0;
-              }
-              input[pos2] = 6;
-              input[pos1] = 0;
-            }else {
-              if ((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0) {
-                System.out.println("test");
-                input[pos1 - 8] = 0;
-              }else {
-                input[pos1 + 8] = 0;
-              }
-              input[pos2] = 12;
-              input[pos1] = 0;
-            }
-          }else {
-            if ((pos2 == pos1 + 16 || pos2 == pos1 - 16) && (input[pos1] == 7 || input[pos1] == 1)){
-              if (pos2 == pos1 + 16){
-                input[pos1 + 8] = input[pos1 + 24];
-                input[pos1 + 24] = 0;
-                input[pos2] = input[pos1];
+          try {
+            if ((input[pos1] == 6 && (((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && letzte[pos1 - 6] == 12 && brett[pos1 - 6] == 0) || ((pos1 - 4) % 8 == 0 && input[pos1 + 9] == 0 && input[pos1 + 8] == 12 && letzte[pos1 + 10] == 12 && brett[pos1 + 10] == 0))) || (input[pos1] == 12 && (((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0) || ((pos1 - 3) % 8 == 0 && input[pos1 + 7] == 0 && input[pos1 + 8] == 6 && letzte[pos1 + 6] == 6 && input[pos1 + 6] == 0)))) {//AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+              if (input[pos1] == 6) {
+                if ((pos1 - 4) % 8 == 0 && input[pos1 - 7] == 0 && input[pos1 - 8] == 12 && letzte[pos1 - 6] == 12 && brett[pos1 - 6] == 0) {
+                  input[pos1 - 8] = 0;
+                } else {
+                  input[pos1 + 8] = 0;
+                }
+                input[pos2] = 6;
                 input[pos1] = 0;
-              }else {
-                input[pos1 - 8] = input[pos1 - 32];
-                input[pos1 - 32] = 0;
-                input[pos2] = input[pos1];
+              } else {
+                if ((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0) {
+                  System.out.println("test");
+                  input[pos1 - 8] = 0;
+                } else {
+                  input[pos1 + 8] = 0;
+                }
+                input[pos2] = 12;
                 input[pos1] = 0;
               }
-            }else {
-              input[pos2] = input[pos1];
-              input[pos1] = 0;
+            } else {
+              if ((pos2 == pos1 + 16 || pos2 == pos1 - 16) && (input[pos1] == 7 || input[pos1] == 1)) {
+                if (pos2 == pos1 + 16) {
+                  input[pos1 + 8] = input[pos1 + 24];
+                  input[pos1 + 24] = 0;
+                  input[pos2] = input[pos1];
+                  input[pos1] = 0;
+                } else {
+                  input[pos1 - 8] = input[pos1 - 32];
+                  input[pos1 - 32] = 0;
+                  input[pos2] = input[pos1];
+                  input[pos1] = 0;
+                }
+              } else {
+                input[pos2] = input[pos1];
+                input[pos1] = 0;
+              }
             }
-          }
+          }catch (Exception ignored){}
         }
       }else {
         richtig = false;
