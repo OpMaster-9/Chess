@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
 
-  //TODO: Botverbessern, Bug fixes:Bot making invalid moves, Draw by Repetition
+  //TODO: Bot verbessern, Bug fixes:Bot making invalid moves
   public static boolean bot = true;
   public static boolean isRunning = true;
   public static boolean richtig = true;
@@ -123,14 +123,16 @@ public class Main {
         if (input[pos2] == 9) {
           if (pos1 == 7) {
             hasMoved[1] = true;
-          } else {
+          }
+          if (pos1 == 63){
             hasMoved[2] = true;
           }
         }
         if (input[pos2] == 3) {
           if (pos1 == 0) {
             hasMoved[4] = true;
-          } else {
+          }
+          if (pos1 == 56){
             hasMoved[5] = true;
           }
         }
@@ -871,7 +873,7 @@ public class Main {
     }
   }
 
-  public static String getFEN() {
+  public static String getFEN(boolean simplified) {
     StringBuilder fen = new StringBuilder();
     int l = 0;
     for (int i = 0; i < 8; i++) {
@@ -939,8 +941,10 @@ public class Main {
     } else {
       fen.append("-");
     }
-    fen.append(" ").append(movementRule);
-    fen.append(" ").append(moveCounter / 2);
+    if (!simplified) {
+      fen.append(" ").append(movementRule);
+      fen.append(" ").append(moveCounter / 2);
+    }
     return fen.toString();
   }
 
@@ -984,37 +988,34 @@ public class Main {
     }
   }
   public static int countOccurrences(String fileName, String searchString) {
-    BufferedReader reader = null;
+    if (searchString == null || searchString.isEmpty()) {
+      return 0;
+    }
+
     int count = 0;  // Counter for occurrences
-    try {
-      // Initialize BufferedReader to read the file
-      reader = new BufferedReader(new FileReader(fileName));
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
       String line;
 
       // Read the file line by line
       while ((line = reader.readLine()) != null) {
-        // While the line contains the search string, count occurrences
         int index = 0;
+        System.out.println(line);
+        line = line.trim();
+        System.out.println(line);
+        // Count occurrences of searchString in line
+        System.out.println(searchString);
+        System.out.println((index = line.indexOf(searchString, index)));
         while ((index = line.indexOf(searchString, index)) != -1) {
           count++;  // Increment count when the string is found
           index += searchString.length();  // Move index forward
         }
       }
     } catch (IOException e) {
-      // Handle possible IOException
       System.out.println("An error occurred while reading the file.");
       e.printStackTrace();
-    } finally {
-      // Close the BufferedReader to release resources
-      try {
-        if (reader != null) {
-          reader.close();
-        }
-      } catch (IOException e) {
-        System.out.println("Failed to close the reader.");
-        e.printStackTrace();
-      }
     }
+
     return count;  // Return the total number of occurrences
   }
 }
