@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class Bot {
-  public static void main(String[] args) {
-
-
-  }
   private static int evaluateBoard(int[] board, int colour) {
     int score = 0;
     List<Integer> figures = new ArrayList<>();
