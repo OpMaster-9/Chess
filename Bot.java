@@ -15,31 +15,75 @@ public class Bot {
     if (colour == 1) {
       for (Integer figure : figures) {
         switch (figure) {
-          case 1 -> score += 200;
-          case 2 -> score += 9;
-          case 3 -> score += 5;
-          case 4, 5 -> score += 3;
-          case 6 -> score += 1;
-          case 7 -> score -= 200;
-          case 8 -> score -= 9;
-          case 9 -> score -= 5;
-          case 10, 11 -> score -= 3;
-          case 12 -> score -= 1;
+          case 1:
+            score += 200;
+            break;
+          case 2:
+            score += 9;
+            break;
+          case 3:
+            score += 5;
+            break;
+          case 4:
+          case 5:
+            score += 3;
+            break;
+          case 6:
+            score += 1;
+            break;
+          case 7:
+            score -= 200;
+            break;
+          case 8:
+            score -= 9;
+            break;
+          case 9:
+            score -= 5;
+            break;
+          case 10:
+          case 11:
+            score -= 3;
+            break;
+          case 12:
+            score -= 1;
+            break;
         }
       }
-    }else {
+    } else {
       for (Integer figure : figures) {
         switch (figure) {
-          case 1 -> score -= 200;
-          case 2 -> score -= 9;
-          case 3 -> score -= 5;
-          case 4, 5 -> score -= 3;
-          case 6 -> score -= 1;
-          case 7 -> score += 200;
-          case 8 -> score += 9;
-          case 9 -> score += 5;
-          case 10, 11 -> score += 3;
-          case 12 -> score += 1;
+          case 1:
+            score -= 200;
+            break;
+          case 2:
+            score -= 9;
+            break;
+          case 3:
+            score -= 5;
+            break;
+          case 4:
+          case 5:
+            score -= 3;
+            break;
+          case 6:
+            score -= 1;
+            break;
+          case 7:
+            score += 200;
+            break;
+          case 8:
+            score += 9;
+            break;
+          case 9:
+            score += 5;
+            break;
+          case 10:
+          case 11:
+            score += 3;
+            break;
+          case 12:
+            score += 1;
+            break;
         }
       }
     }

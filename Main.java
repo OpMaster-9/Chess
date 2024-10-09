@@ -255,44 +255,6 @@ public class Main {
   }
 
   public static int promotion(int[] input, int pos1) {
-    /*
-    int output = 0;
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    System.out.println("Promotion!");
-    System.out.println("Was soll es werden? (Q,R,B,K)");
-    String piece = br.readLine();
-    if(input[pos1] == 6){
-    switch (piece){
-    case "Q":
-    output = 2;
-    break;
-    case "R":
-    output = 3;
-    break;
-    case "B":
-    output = 4;
-    break;
-    case "K":
-    output = 5;
-    break;
-    }
-    }else {
-    switch (piece){
-    case "Q":
-    output = 8;
-    break;
-    case "R":
-    output = 9;
-    break;
-    case "B":
-    output = 10;
-    break;
-    case "K":
-    output = 11;
-    break;
-    }
-    }
-    return output;*/
     int output = 0;
     JOptionPane.showMessageDialog(null, "Promotion!", "Schachfiguren-Promotion", JOptionPane.INFORMATION_MESSAGE);
     String piece = (String) JOptionPane.showInputDialog(
@@ -305,23 +267,38 @@ public class Main {
             "Queen"
     );
     if (input[pos1] == 6) {
-      output = switch (piece) {
-        case "Queen" -> 2;
-        case "Turm" -> 3;
-        case "Läufer" -> 4;
-        case "Springer" -> 5;
-        default -> output;
-      };
+      switch (piece) {
+        case "Queen":
+          output = 2;
+          break;
+        case "Turm":
+          output = 3;
+          break;
+        case "Läufer":
+          output = 4;
+          break;
+        case "Springer":
+          output = 5;
+          break;
+      }
     } else {
-      output = switch (piece) {
-        case "Queen" -> 8;
-        case "Turm" -> 9;
-        case "Läufer" -> 10;
-        case "Springer" -> 11;
-        default -> output;
-      };
+      switch (piece) {
+        case "Queen":
+          output = 8;
+          break;
+        case "Turm":
+          output = 9;
+          break;
+        case "Läufer":
+          output = 10;
+          break;
+        case "Springer":
+          output = 11;
+          break;
+      }
     }
     return output;
+
   }
 
   public static boolean check(int[] input, int pos, int farbe) {
@@ -782,12 +759,32 @@ public class Main {
   }
 
   public static int findColour(int[] input, int pos) {
-    return switch (input[pos]) {
-      case 1, 2, 3, 4, 5, 6 -> 1;
-      case 7, 8, 9, 10, 11, 12 -> 0;
-      case 0 -> 3;
-      default -> -1;
-    };
+    int value;
+    switch (input[pos]) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+        value = 1;
+        break;
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+      case 11:
+      case 12:
+        value = 0;
+        break;
+      case 0:
+        value = 3;
+        break;
+      default:
+        value = -1;
+        break;
+    }
+    return value;
   }
 
   public static boolean stalemateTest(int[] input, int pos) {
@@ -879,21 +876,45 @@ public class Main {
     for (int i = 0; i < 8; i++) {
       int emptySquares = 0;
       for (int j = 0; j < 8; j++) {
-        char piece = switch (brett[l]) {
-          case 1 -> 'k';
-          case 2 -> 'q';
-          case 3 -> 'r';
-          case 4 -> 'b';
-          case 5 -> 'n';
-          case 6 -> 'p';
-          case 7 -> 'K';
-          case 8 -> 'Q';
-          case 9 -> 'R';
-          case 10 -> 'B';
-          case 11 -> 'N';
-          case 12 -> 'P';
-          default -> ' ';
-        };
+        char piece = ' ';
+        switch (brett[l]) {
+          case 1:
+            piece = 'k';
+            break;
+          case 2:
+            piece = 'q';
+            break;
+          case 3:
+            piece = 'r';
+            break;
+          case 4:
+            piece = 'b';
+            break;
+          case 5:
+            piece = 'n';
+            break;
+          case 6:
+            piece = 'p';
+            break;
+          case 7:
+            piece = 'K';
+            break;
+          case 8:
+            piece = 'Q';
+            break;
+          case 9:
+            piece = 'R';
+            break;
+          case 10:
+            piece = 'B';
+            break;
+          case 11:
+            piece = 'N';
+            break;
+          case 12:
+            piece = 'P';
+            break;
+        }
         l += 8;
         if (piece == ' ') {
           emptySquares++;
