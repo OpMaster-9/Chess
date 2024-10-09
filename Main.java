@@ -74,7 +74,6 @@ public class Main {
                 input[pos1] = 0;
               } else {
                 if ((pos1 - 3) % 8 == 0 && input[pos1 - 9] == 0 && input[pos1 - 8] == 6 && letzte[pos1 - 10] == 6 && input[pos1 + 10] == 0) {
-                  System.out.println("test");
                   input[pos1 - 8] = 0;
                 } else {
                   input[pos1 + 8] = 0;
@@ -142,7 +141,6 @@ public class Main {
         if (input[pos2] == 7) {
           hasMoved[0] = true;
         }
-        System.out.println(Arrays.toString(hasMoved));
         moveCounter++;
         if (pieceAmount(anfang) > pieceAmount(input)) {
           movementRule = 0;
@@ -321,7 +319,6 @@ public class Main {
             }
           }
         }//läufer check
-        //System.out.println("Springer:" + schach);
         if (!schach) {
           boolean wbishop_b = true;
           int wbishop = 0;
@@ -351,7 +348,6 @@ public class Main {
             }
           }
         }// turm
-        //System.out.println("Läufer:" + schach);
         if (!schach) {
           boolean wrook_b = true;
           int wrook = 0;
@@ -398,7 +394,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }// könig
-        //System.out.println("Turm:" + schach);
         if (!schach) {
           int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
           int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
@@ -423,7 +418,6 @@ public class Main {
             }
           }
         }//bauer
-        //System.out.println("König:" + schach);
         if (!schach) {
           try {
             if (input[pos - 9] == 6) {
@@ -438,7 +432,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }//Queen
-        //System.out.println("Bauer:" + schach);
         if (!schach) {
           boolean wdame_b = true;
           int wdame = 0;
@@ -510,7 +503,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }
-        //System.out.println("Queen:" + schach);
       } else {
         int[] springer = {-17, -15, -10, -6, 6, 10, 15, 17};
         for (int i = 0; i < springer.length; i++) {
@@ -528,7 +520,6 @@ public class Main {
             }
           }
         }//läufer check
-        //System.out.println("Springer:" + schach);
         if (!schach) {
           boolean wbishop_b = true;
           int wbishop = 0;
@@ -555,7 +546,6 @@ public class Main {
             }
           }
         }// turm
-        //System.out.println("Läufer:" + schach);
         if (!schach) {
           boolean wrook_b = true;
           int wrook = 0;
@@ -602,7 +592,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }// könig
-        //System.out.println("Turm:" + schach);
         if (!schach) {
           int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
           int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
@@ -627,7 +616,6 @@ public class Main {
             }
           }
         }//bauer
-        //System.out.println("König:" + schach);
         if (!schach) {
           try {
             if (input[pos - 7] == 12) {
@@ -642,7 +630,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }// Queen
-        //System.out.println("Bauer:" + schach);
         if (!schach) {
           boolean wdame_b = true;
           int wdame = 0;
@@ -711,7 +698,6 @@ public class Main {
           } catch (Exception ignored) {
           }
         }
-        //System.out.println("Queen:" + schach);
       }
       return schach;
     } else {
@@ -1015,11 +1001,7 @@ public class Main {
       String line;
       while ((line = reader.readLine()) != null) {
         int index = 0;
-        System.out.println(line);
         line = line.trim();
-        System.out.println(line);
-        System.out.println(searchString);
-        System.out.println((index = line.indexOf(searchString, index)));
         while ((index = line.indexOf(searchString, index)) != -1) {
           count++;
           index += searchString.length();

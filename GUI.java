@@ -119,14 +119,18 @@ public class GUI{
                                 Main.writeToFile("log.txt",Main.getFEN(false));
                                 Main.writeToFile("log.txt",Main.zahlZuFeld(feld1) + ", " + Main.zahlZuFeld(feld2));
                                 Main.brett = Main.move(Main.brett, feld1, feld2);
-                                Main.writeToFile("FEN.txt",Main.getFEN(true));
+                                if (Main.richtig) {
+                                    Main.writeToFile("FEN.txt", Main.getFEN(true));
+                                }
                                 if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
                                     Main.isRunning = false;
                                     indicator.setText("Unentschieden durch Wiederholung.");
+                                    Main.writeToFile("log.txt","Unentschieden durch Wiederholung.");
                                 }
                                 if (Main.movementRule >= 50){
                                     Main.isRunning = false;
                                     indicator.setText("Unentschieden durch 50 Zug regel.");
+                                    Main.writeToFile("log.txt","Unentschieden durch 50 Zug regel.");
                                 }
                                 if (Main.richtig) {
                                     Main.letzte = Arrays.copyOf(temp, temp.length);
@@ -284,15 +288,18 @@ public class GUI{
                 int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
                 Main.writeToFile("log.txt",Main.getFEN(false));
                 Main.writeToFile("log.txt",Main.zahlZuFeld(feld12) + ", " + Main.zahlZuFeld(feld22));
-                Main.brett = Main.move(Main.brett, feld12, feld22);
-                Main.writeToFile("FEN.txt",Main.getFEN(true));
+                Main.brett = Main.move(Main.brett, feld12, feld22);if (Main.richtig) {
+                    Main.writeToFile("FEN.txt", Main.getFEN(true));
+                }
                 if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
                     Main.isRunning = false;
                     indicator.setText("Unentschieden durch Wiederholung.");
+                    Main.writeToFile("log.txt","Unentschieden durch Wiederholung.");
                 }
                 if (Main.movementRule >= 50){
                     Main.isRunning = false;
                     indicator.setText("Unentschieden durch 50 Zug regel.");
+                    Main.writeToFile("log.txt","Unentschieden durch 50 Zug regel.");
                 }
                 if (Main.richtig) {
                     Main.letzte = Arrays.copyOf(temp, temp.length);
@@ -338,7 +345,7 @@ public class GUI{
             if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
                 indicator.setText("Remis");
                 System.out.println("Remis");
-                Main.writeToFile("log.txt","Remis hat gewonnen");
+                Main.writeToFile("log.txt","Remis");
                 Main.isRunning = false;
             }
             if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
