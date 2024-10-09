@@ -172,19 +172,21 @@ public class GUI{
                             if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
                                 indicator.setText("Remis");
                                 System.out.println("Remis");
+                                Main.writeToFile("log.txt","Remis");
                                 Main.isRunning = false;
                             }
                             if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
-                                System.out.println("Schach" + Main.amZug);
                                 feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250,128,114));
                                 if (Main.mattTest(Main.brett, Main.amZug)) {
                                     if (Main.amZug == 0) {
                                         indicator.setText("Schwarz hat gewonnen");
                                         System.out.println("Schwarz hat gewonnen");
+                                        Main.writeToFile("log.txt","Schwarz hat gewonnen");
                                         Main.isRunning = false;
                                     } else {
                                         indicator.setText("Weiß hat gewonnen.");
                                         System.out.println("Weiß hat gewonnen");
+                                        Main.writeToFile("log.txt","Weiß hat gewonnen");
                                         Main.isRunning = false;
                                     }
                                 }
@@ -193,12 +195,8 @@ public class GUI{
                                 bot = false;
                                 Thread thread = new Thread(() -> {
                                     botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, false,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
-                                    System.out.println(botMove[0]);
-                                    System.out.println(Main.zahlZuFeld(botMove[1]));
-                                    System.out.println(Main.zahlZuFeld(botMove[2]));
                                     GUI.simulateButtonPress(botMove[1]);
                                     GUI.simulateButtonPress(botMove[2]);
-                                    System.out.println("Berechnet.");
                                 });
                                 thread.start();
 
@@ -284,9 +282,10 @@ public class GUI{
                 feld22 = index;
                 feld1_b2 = true;
                 int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
+                Main.writeToFile("log.txt",Main.getFEN(false));
+                Main.writeToFile("log.txt",Main.zahlZuFeld(feld12) + ", " + Main.zahlZuFeld(feld22));
                 Main.brett = Main.move(Main.brett, feld12, feld22);
                 Main.writeToFile("FEN.txt",Main.getFEN(true));
-                System.out.println("occurances: " + Main.countOccurrences("FEN.txt",Main.getFEN(true)));
                 if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
                     Main.isRunning = false;
                     indicator.setText("Unentschieden durch Wiederholung.");
@@ -339,25 +338,25 @@ public class GUI{
             if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
                 indicator.setText("Remis");
                 System.out.println("Remis");
+                Main.writeToFile("log.txt","Remis hat gewonnen");
                 Main.isRunning = false;
             }
             if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
-                System.out.println("Schach" + Main.amZug);
                 feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250,128,114));
                 if (Main.mattTest(Main.brett, Main.amZug)) {
                     if (Main.amZug == 0) {
                         indicator.setText("Schwarz hat gewonnen");
                         System.out.println("Schwarz hat gewonnen");
+                        Main.writeToFile("log.txt","Schwarz hat gewonnen");
                         Main.isRunning = false;
                     } else {
                         indicator.setText("Weiß hat gewonnen.");
                         System.out.println("Weiß hat gewonnen");
+                        Main.writeToFile("log.txt","Weiß hat gewonnen");
                         Main.isRunning = false;
                     }
                 }
             }
-            Main.writeToFile("log.txt",Main.getFEN(false));
-            Main.writeToFile("log.txt",Main.zahlZuFeld(feld12) + ", " + Main.zahlZuFeld(feld22));
         }
     }
 }

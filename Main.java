@@ -982,7 +982,6 @@ public class Main {
     }
     return -1;
   }
-
   public static int pieceAmount(int[] input) {
     int amount = 0;
     for (int i = 0; i < 64; i++) {
@@ -992,7 +991,6 @@ public class Main {
     }
     return amount;
   }
-
   public static void clearFile(String fileName) {
     FileWriter writer = null;
     try {
@@ -1012,31 +1010,23 @@ public class Main {
     if (searchString == null || searchString.isEmpty()) {
       return 0;
     }
-
-    int count = 0;  // Counter for occurrences
-
+    int count = 0;
     try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
       String line;
-
-      // Read the file line by line
       while ((line = reader.readLine()) != null) {
         int index = 0;
         System.out.println(line);
         line = line.trim();
         System.out.println(line);
-        // Count occurrences of searchString in line
         System.out.println(searchString);
         System.out.println((index = line.indexOf(searchString, index)));
         while ((index = line.indexOf(searchString, index)) != -1) {
-          count++;  // Increment count when the string is found
-          index += searchString.length();  // Move index forward
+          count++;
+          index += searchString.length();
         }
       }
-    } catch (IOException e) {
-      System.out.println("An error occurred while reading the file.");
-      e.printStackTrace();
+    } catch (IOException ignored) {
     }
-
-    return count;  // Return the total number of occurrences
+    return count;
   }
 }
