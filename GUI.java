@@ -198,7 +198,7 @@ public class GUI{
                             if(Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
-                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 6, true,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
+                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, true,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
                                     System.out.println(Bot.evaluateBoard(Main.brett,1));
                                     System.out.println(botMove[0]);
                                     GUI.simulateButtonPress(botMove[1]);

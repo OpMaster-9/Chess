@@ -23,14 +23,14 @@ public class Main {
           4, 6, 0, 0, 0, 0, 12, 10,
           5, 6, 0, 0, 0, 0, 12, 11,
           3, 6, 0, 0, 0, 0, 12, 9};
-  public static int[] brett = {3, 6, 0, 0, 0, 0, 12, 9,
-          5, 6, 0, 0, 0, 0, 12, 11,
-          4, 6, 0, 0, 0, 0, 12, 10,
-          2, 6, 0, 0, 0, 0, 12, 8,
-          1, 6, 0, 0, 0, 0, 12, 7,
-          4, 6, 0, 0, 0, 0, 12, 10,
-          5, 6, 0, 0, 0, 0, 12, 11,
-          3, 6, 0, 0, 0, 0, 12, 9
+  public static int[] brett = {0, 3, 6, 0, 0, 0, 12, 9,
+          5, 0, 6, 0, 0, 0, 12, 0,
+          0, 6, 0, 0, 0, 12, 0, 10,
+          2, 0, 0, 0, 0, 0, 0, 0,
+          4, 6, 0, 11, 6, 0, 0, 7,
+          1, 6, 5, 0, 8, 0, 12, 11,
+          0, 6, 0, 0, 0, 0, 12, 10,
+          3, 6, 0, 0, 12, 0, 0, 9
   };
   public static int amZug = 0;
   public static int moveCounter = 0;
@@ -220,7 +220,11 @@ public class Main {
     if (input[pos1] != 0) {
       if (MovementCheck.wohinGehtBittiBitti(input, pos1, colour).contains(pos2)) {
         if ((input[pos1] == 6 && (pos2 - 7) % 8 == 0) || (input[pos1] == 12 && pos2 % 8 == 0)) {
-          input[pos2] = 13;
+          if (colour == 1) {
+            input[pos2] = 2;
+          }else {
+            input[pos2] = 8;
+          }
           input[pos1] = 0;
         } else {
           if ((input[pos1] == 6 && (pos2 == pos1 + 9 || pos2 == pos1 - 7)) || (input[pos1] == 12 && (pos2 == pos1 + 7 || pos2 == pos1 - 9))) {
