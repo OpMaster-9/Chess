@@ -51,7 +51,7 @@ public class Main {
     if (input[pos1] != 0) {
       if (MovementCheck.wohinGehtBittiBitti(input, pos1, colour).contains(pos2)) {
         if ((input[pos1] == 6 && (pos2 - 7) % 8 == 0) || (input[pos1] == 12 && pos2 % 8 == 0)) {
-          if (!bot) {
+          if (amZug == 0) {
             input[pos2] = promotion(input, pos1);
           } else {
             if (colour == 0) {
