@@ -43,18 +43,18 @@ public class Main {
     GUI.GUI();
   }
 
-  public static int[] move(int[] input, int pos1, int pos2) {
+  public static int[] move(int[] input, int pos1, int pos2,int colour) {
     if (input[pos1] == 6 || input[pos1] == 12) {
       pawnMove = true;
     }
     int[] anfang = Arrays.copyOf(input, input.length);
     if (input[pos1] != 0) {
-      if (MovementCheck.wohinGehtBittiBitti(input, pos1, amZug).contains(pos2)) {
+      if (MovementCheck.wohinGehtBittiBitti(input, pos1, colour).contains(pos2)) {
         if ((input[pos1] == 6 && (pos2 - 7) % 8 == 0) || (input[pos1] == 12 && pos2 % 8 == 0)) {
           if (!bot) {
             input[pos2] = promotion(input, pos1);
           } else {
-            if (amZug == 0) {
+            if (colour == 0) {
               input[pos2] = 8;
             } else {
               input[pos2] = 2;
@@ -112,7 +112,7 @@ public class Main {
       System.out.println("In diesem Feld steht keine Figur(skill issue)");
       pawnMove = false;
     }
-    if (check(input, findKing(input, amZug), amZug)) {
+    if (check(input, findKing(input, colour), colour)) {
       richtig = false;
       System.out.println("Du stehst wahrscheinlich im Schach(Würd mir stinken)");
       pawnMove = false;

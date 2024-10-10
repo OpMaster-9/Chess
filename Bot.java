@@ -1,90 +1,15 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
 
 public class Bot {
-  private static int evaluateBoard(int[] board, int colour) {
+  public static int evaluateBoard(int[] board, int colour) {
     int score = 0;
-    List<Integer> figures = new ArrayList<>();
+    int[] pieceValues = {0, 200, 9, 5, 3, 3, 1, -200, -9, -5, -3, -3, -1};
     for (int j : board) {
       if (j != 0) {
-        figures.add(j);
-      }
-    }
-    if (colour == 1) {
-      for (Integer figure : figures) {
-        switch (figure) {
-          case 1:
-            score += 200;
-            break;
-          case 2:
-            score += 9;
-            break;
-          case 3:
-            score += 5;
-            break;
-          case 4:
-          case 5:
-            score += 3;
-            break;
-          case 6:
-            score += 1;
-            break;
-          case 7:
-            score -= 200;
-            break;
-          case 8:
-            score -= 9;
-            break;
-          case 9:
-            score -= 5;
-            break;
-          case 10:
-          case 11:
-            score -= 3;
-            break;
-          case 12:
-            score -= 1;
-            break;
-        }
-      }
-    } else {
-      for (Integer figure : figures) {
-        switch (figure) {
-          case 1:
-            score -= 200;
-            break;
-          case 2:
-            score -= 9;
-            break;
-          case 3:
-            score -= 5;
-            break;
-          case 4:
-          case 5:
-            score -= 3;
-            break;
-          case 6:
-            score -= 1;
-            break;
-          case 7:
-            score += 200;
-            break;
-          case 8:
-            score += 9;
-            break;
-          case 9:
-            score += 5;
-            break;
-          case 10:
-          case 11:
-            score += 3;
-            break;
-          case 12:
-            score += 1;
-            break;
-        }
+        int value = pieceValues[Math.abs(j)];
+        score += (j > 0 ? value : -value);
       }
     }
     return score;
@@ -179,5 +104,4 @@ public class Bot {
     }
     return bestMove;
   }
-
 }

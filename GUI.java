@@ -118,7 +118,7 @@ public class GUI{
                                 int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
                                 Main.writeToFile("log.txt",Main.getFEN(false));
                                 Main.writeToFile("log.txt",Main.zahlZuFeld(feld1) + ", " + Main.zahlZuFeld(feld2));
-                                Main.brett = Main.move(Main.brett, feld1, feld2);
+                                Main.brett = Main.move(Main.brett, feld1, feld2,0);
                                 if (Main.richtig) {
                                     Main.writeToFile("FEN.txt", Main.getFEN(true));
                                 }
@@ -198,7 +198,9 @@ public class GUI{
                             if(Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
-                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, false,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
+                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 6, true,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
+                                    System.out.println(Bot.evaluateBoard(Main.brett,1));
+                                    System.out.println(botMove[0]);
                                     GUI.simulateButtonPress(botMove[1]);
                                     GUI.simulateButtonPress(botMove[2]);
                                 });
@@ -288,7 +290,8 @@ public class GUI{
                 int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
                 Main.writeToFile("log.txt",Main.getFEN(false));
                 Main.writeToFile("log.txt",Main.zahlZuFeld(feld12) + ", " + Main.zahlZuFeld(feld22));
-                Main.brett = Main.move(Main.brett, feld12, feld22);if (Main.richtig) {
+                Main.brett = Main.move(Main.brett, feld12, feld22,1);
+                if (Main.richtig) {
                     Main.writeToFile("FEN.txt", Main.getFEN(true));
                 }
                 if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
