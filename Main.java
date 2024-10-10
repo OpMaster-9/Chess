@@ -100,6 +100,8 @@ public class Main {
               }
             }
           } catch (Exception ignored) {
+            input[pos2] = input[pos1];
+            input[pos1] = 0;
           }
         }
       } else {
