@@ -779,15 +779,12 @@ public class Main {
     return value;
   }
 
-  public static boolean stalemateTest(int[] input, int pos) {
-    int[] boardCopy = Arrays.copyOf(input, input.length);
-    int colour = findColour(boardCopy, pos);
-    int kingPosition = findKing(boardCopy, colour);
-    if (check(boardCopy, kingPosition, colour)) {
+  public static boolean stalemateTest(int[] input, int colour) {
+    if (check(input, findKing(input,colour), colour)) {
       return false;
     }
     for (int i = 0; i < 64; i++) {
-      if (!MovementCheck.wohinGehtBittiBitti(boardCopy, i, amZug).isEmpty()) {
+      if (!MovementCheck.wohinGehtBittiBitti(input, i, colour).isEmpty()) {
         return false;
       }
     }

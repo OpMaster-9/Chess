@@ -147,6 +147,12 @@ public class GUI{
                                     }
                                 }
                             }
+                            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
+                                indicator.setText("Remis");
+                                System.out.println("Remis");
+                                Main.writeToFile("log.txt","Remis");
+                                Main.isRunning = false;
+                            }
                             if (Main.richtig && feld1_b) {
                                 if (Main.amZug == 0) {
                                     Main.amZug = 1;
@@ -172,12 +178,6 @@ public class GUI{
                                     indicator.setText("Schwarz am Zug.");
                                     black.start();
                                 }
-                            }
-                            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
-                                indicator.setText("Remis");
-                                System.out.println("Remis");
-                                Main.writeToFile("log.txt","Remis");
-                                Main.isRunning = false;
                             }
                             if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
                                 feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250,128,114));
@@ -319,6 +319,12 @@ public class GUI{
                     }
                 }
             }
+            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
+                indicator.setText("Remis");
+                System.out.println("Remis");
+                Main.writeToFile("log.txt","Remis");
+                Main.isRunning = false;
+            }
             if (Main.richtig && feld1_b2) {
                 if (Main.amZug == 0) {
                     Main.amZug = 1;
@@ -344,12 +350,6 @@ public class GUI{
                     indicator.setText("Schwarz am Zug.");
                     black.start();
                 }
-            }
-            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
-                indicator.setText("Remis");
-                System.out.println("Remis");
-                Main.writeToFile("log.txt","Remis");
-                Main.isRunning = false;
             }
             if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
                 feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250,128,114));
