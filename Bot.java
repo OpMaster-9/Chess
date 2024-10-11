@@ -3,15 +3,93 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Bot {
-  public static int evaluateBoard(int[] board, int colour) {
+  private static int[][] piecePositionTable = {
+         {20, 20, -10, -20, -30, -30, -30, -30,
+                 30, 20, -20, -30, -40, -40, -40, -40,
+                 10, 0, -20, -30, -40, -40, -40, -40,
+                 0, 0, -20, -40, -50, -50, -50, -50,
+                 0, 0, -20, -40, -50, -50, -50, -50,
+                 10, 0, -20, -30, -40, -40, -40, -40,
+                 30, 20, -20, -30, -40, -40, -40, -40,
+                 20, 20, -10, -20, -30, -30, -30, -30
+         },
+         {-20, -10, -10, -5, -5, -10, -10, -20,
+                 -10, 0, 0, 0, 0, 0, 0, -10,
+                 -10, 0, 5, 5, 5, 5, 0, -10,
+                 -5, 0, 5, 5, 5, 5, 0, -5,
+                 -5, 0, 5, 5, 5, 5, 0, -5,
+                 -10, 0, 5, 5, 5, 5, 5, -10,
+                 -10, 0, 0, 0, 0, 0, 0, -10,
+                 -20, -10, -10, -5, 0, -10, -10, -20
+          },
+         {0, -5, -5, -5, -5, -5, 5, 0,
+                 0, 0, 0, 0, 0, 0, 10, 0,
+                 0, 0, 0, 0, 0, 0, 10, 0,
+                 5, 0, 0, 0, 0, 0, 10, 5,
+                 5, 0, 0, 0, 0, 0, 10, 5,
+                 0, 0, 0, 0, 0, 0, 10, 0,
+                 0, 0, 0, 0, 0, 0, 10, 0,
+                 0, -5, -5, -5, -5, -5, 5, 0
+          },
+         {-20, -10, -10, -10, -10, -10, -10, -20,
+                 -10, 0, 0, 5, 0, 10, 5, -10,
+                 -10, 0, 5, 5, 10, 10, 0, -10,
+                 -10, 0, 10, 10, 10, 10, 0, -10,
+                 -10, 0, 10, 10, 10, 10, 0, -10,
+                 -10, 0, 5, 5, 10, 10, 0, -10,
+                 -10, 0, 0, 5, 0, 10, 5, -10,
+                 -20, -10, -10, -10, -10, -10, -10, -20
+          },
+         {-50, -40, -30, -30, -30, -30, -40, -50,
+                 -40, -20, 0, 0, 0, 0, -20, -40,
+                 -30, 0, 10, 15, 15, 10, 0, -30,
+                 -30, 5, 15, 20, 20, 15, 5, -30,
+                 -30, 5, 15, 20, 20, 15, 5, -30,
+                 -30, 0, 10, 15, 15, 10, 0, -30,
+                 -40, -20, 0, 5, 5, 0, -20, -40,
+                 -50, -40, -30, -30, -30, -30, -40, -50
+         },
+         {0, 5, 5, 0, 5, 10, 50, 100,
+                 0, 10, -5, 0, 5, 10, 50, 100,
+                 0, 10, -10, 0, 10, 20, 50, 100,
+                 0, -20, 0, 20, 25, 30, 50, 100,
+                 0, -20, 0, 20, 25, 30, 50, 100,
+                 0, 10, -10, 0, 10, 20, 50, 100,
+                 0, 10, -5, 0, 5, 10, 50, 100,
+                 0, 5, 5, 0, 5, 10, 50, 100
+          }
+  };
+  private static int piecePositionEvaluation(int[] board, int colour){
     int score = 0;
-    int[] pieceValues = {0, 200, 9, 5, 3, 3, 1, -200, -9, -5, -3, -3, -1};
+    for (int i = 1; i <= 6; i++) {
+      int piece = i - 1;
+      int pieceColored = i;
+      /*if (colour == 0) {
+        pieceColored += 6;
+      }*/
+      for (int j = 0; j < board.length; j++) {
+        if (board[j] == pieceColored) {
+          score += piecePositionTable[piece][j];
+        }
+      }
+    }
+    return score;
+  }
+  private static int evaluateBoardPieceValues(int[] board, int colour) {
+    int score = 0;
+    int[] pieceValues = {0, 200000, 900, 500, 300, 300, 100, -200000, -900, -500, -300, -300, -100};
     for (int j : board) {
       if (j != 0) {
         int value = pieceValues[Math.abs(j)];
         score += (j > 0 ? value : -value);
       }
     }
+    return score;
+  }
+  public static int evaluateBoard(int[] board, int colour){
+    int score = 0;
+    score += evaluateBoardPieceValues(board,colour);
+    score += piecePositionEvaluation(board,colour);
     return score;
   }
   public List<int[]> allMoves(int[] input, int colour){
