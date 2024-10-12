@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Bot {
+  private static boolean endgame = false;
   private static int[][] piecePositionTable = {
          {20, 20, -10, -20, -30, -30, -30, -30,
                  30, 20, -20, -30, -40, -40, -40, -40,
@@ -57,18 +58,65 @@ public class Bot {
                  0, 10, -10, 0, 10, 20, 50, 100,
                  0, 10, -5, 0, 5, 10, 50, 100,
                  0, 5, 5, 0, 5, 10, 50, 100
-          }
+          },
+         {-50, -30, -30, -30, -30, -50,
+                 -40, -20, -10, -10, -10, -10, -30, -30,
+                 -30, -10, 20, 30, 30, 20, 0, -30,
+                 -20, 0, 0, 30, 40, 40, 0, -30,
+                 -20, 0, 0, 30, 40, 40, 0, -30,
+                 -30, -10, 20, 30, 30, 20, 0, -30,
+                 -40, -20, -10, -10, -10, -10, -30, -30,
+                 -50, -30, -30, -30, -30, -50
+         }
   };
+  private static int materialCount(int[] board){
+    int value = 0;
+      for (int j : board) {
+          switch (j) {
+              case 2:
+              case 8:
+                  value += 9;
+                  break;
+              case 3:
+              case 9:
+                  value += 5;
+                  break;
+              case 4:
+              case 5:
+              case 10:
+              case 11:
+                  value += 3;
+                  break;
+          }
+      }
+    return value;
+  }
+  private static int countMajorPieces(int[] board){
+    int amount = 0;
+    for (int j : board) {
+      switch (j) {
+        case 2:
+        case 8:
+        case 3:
+        case 9:
+          amount += 1;
+        break;
+      }
+    }
+    return amount;
+  }
+  private static boolean endgameDetection(int[] board){
+      return countMajorPieces(board) > 3 && materialCount(board) > 15;
+  }
   private static int piecePositionEvaluation(int[] board, int colour){
     int score = 0;
     for (int i = 1; i <= 6; i++) {
       int piece = i - 1;
-      int pieceColored = i;
-      /*if (colour == 0) {
-        pieceColored += 6;
-      }*/
+      if (endgame && i == 1){
+        piece = 6;
+      }
       for (int j = 0; j < board.length; j++) {
-        if (board[j] == pieceColored) {
+        if (board[j] == i) {
           score += piecePositionTable[piece][j];
         }
       }
@@ -110,6 +158,11 @@ public class Bot {
     return allMoves;
   }
   public int[] miniMax(int[] input, int colour, int depth, boolean isMaximizingPlayer, int alpha, int beta) {
+    if (!endgame){
+      if (endgameDetection(input)){
+        endgame = true;
+      }
+    }
     if (depth == 0) {
       return new int[]{evaluateBoard(input, colour)};
     }
@@ -171,7 +224,6 @@ public class Bot {
         for (int j = 0; j < allMoves.size(); j++) {
           int[] temp = Arrays.copyOf(input,input.length);
           Main.moveWithoutCheck(temp, i, allMoves.get(j),colour);
-          //System.out.println(Main.zahlZuFeld(i) + Main.zahlZuFeld(allMoves.get(j)) + evaluateBoard(temp,colour));
           if (evaluateBoard(temp,colour) > bestEval && !Main.check(temp,Main.findKing(temp,colour),colour)) {
             bestEval = evaluateBoard(temp,colour);
             bestMove[0] = i;
