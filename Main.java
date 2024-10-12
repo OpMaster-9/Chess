@@ -307,7 +307,6 @@ public class Main {
 
   public static boolean check(int[] input, int pos, int farbe) {
     if (input.length == 64) {
-      boolean schach = false;
       if (farbe == 0) { //springer check
         int[] springer = {-17, -15, -10, -6, 6, 10, 15, 17};
         for (int i = 0; i < springer.length; i++) {
@@ -319,195 +318,186 @@ public class Main {
           } else {
             try {
               if (input[pos + springer[i]] == 5) {
-                schach = true;
+                return true;
               }
             } catch (Exception ignored) {
             }
           }
         }//läufer check
-        if (!schach) {
-          boolean wbishop_b = true;
-          int wbishop = 0;
-          int[] wlimits = {-7, -7, 0, 0};
-          int[] wbewegung = {9, -7, -9, 7};
-          for (int i = 0; i < 4; i++) {
-            wbishop_b = true;
-            wbishop = 0;
-            if ((pos + wbishop + wlimits[i]) % 8 != 0) {
-              wbishop = wbishop + wbewegung[i];
+        boolean wbishop_b = true;
+        int wbishop = 0;
+        int[] wlimits = {-7, -7, 0, 0};
+        int[] wbewegung = {9, -7, -9, 7};
+        for (int i = 0; i < 4; i++) {
+          wbishop_b = true;
+          wbishop = 0;
+          if ((pos + wbishop + wlimits[i]) % 8 != 0) {
+            wbishop = wbishop + wbewegung[i];
+          }
+          while (wbishop_b) {   //Algorithmus zur Ausrechnung der Felder des Bischofs
+            if (pos + wbishop < 0 || pos + wbishop > 63) {
+              break;
             }
-            while (wbishop_b) {   //Algorithmus zur Ausrechnung der Felder des Bischofs
-              if (pos + wbishop < 0 || pos + wbishop > 63) {
-                break;
-              }
-              try {
-                if ((pos + wbishop + wlimits[i]) % 8 == 0 || input[pos + wbishop] != 0) {
-                  if (input[pos + wbishop] == 4) {
-                    schach = true;
-                    break;
-                  }
-                  wbishop_b = false;
+            try {
+              if ((pos + wbishop + wlimits[i]) % 8 == 0 || input[pos + wbishop] != 0) {
+                if (input[pos + wbishop] == 4) {
+                  return true;
                 }
-                wbishop = wbishop + wbewegung[i];
-              } catch (Exception ignored) {
+                wbishop_b = false;
               }
+              wbishop = wbishop + wbewegung[i];
+            } catch (Exception ignored) {
             }
           }
         }// turm
-        if (!schach) {
-          boolean wrook_b = true;
-          int wrook = 0;
-          int[] wlimits_r = {-7, 0};
-          int[] wbewegung_r = {1, -1};
-          for (int i = 0; i < 2; i++) {
-            wrook_b = true;
-            if ((pos + wrook + wlimits_r[i]) % 8 != 0) {
-              wrook = wbewegung_r[i];
-            } else {
-              wrook = 0;
-            }
-            while (wrook_b) {
-              if (pos + wrook < 0 || pos + wrook > 63) {
-                break;
-              }
-              if ((pos + wrook + wlimits_r[i]) % 8 == 0 || input[pos + wrook] != 0) {
-                if (input[pos + wrook] == 3) {
-                  schach = true;
-                }
-                wrook_b = false;
-              }
-              wrook = wrook + wbewegung_r[i];
-            }
-          }
+        System.out.println("turm");
+        boolean wrook_b = true;
+        int wrook = 0;
+        int[] wlimits_r = {-7, 0};
+        int[] wbewegung_r = {1, -1};
+        for (int i = 0; i < 2; i++) {
           wrook = 0;
-          try {
-            do {
-              wrook = wrook + 8;
-              if (wrook + pos <= 64 && input[pos + wrook] == 3) {
-                schach = true;
-              }
-            } while (wrook + pos <= 64 && input[pos + wrook] == 0);
-          } catch (Exception ignored) {
+          wrook_b = true;
+          if ((pos + wrook + wlimits_r[i]) % 8 != 0) {
+            wrook = wbewegung_r[i];
           }
-          wrook = 0;
-          try {
-            do {
-              wrook = wrook - 8;
-              if (wrook + pos >= 0 && input[pos + wrook] == 3) {
-                schach = true;
+          while (wrook_b) {
+            if (pos + wrook < 0 || pos + wrook > 63) {
+              break;
+            }
+            if ((pos + wrook + wlimits_r[i]) % 8 == 0 || input[pos + wrook] != 0) {
+              if (input[pos + wrook] == 3) {
+                return true;
               }
-            } while (wrook + pos >= 0 && input[pos + wrook] == 0);
-          } catch (Exception ignored) {
+              wrook_b = false;
+            }
+            wrook = wrook + wbewegung_r[i];
           }
+        }
+        System.out.println("turm 2");
+        wrook = 0;
+        try {
+          do {
+            wrook = wrook + 8;
+            if (wrook + pos <= 64 && input[pos + wrook] == 3) {
+              return true;
+            }
+          } while (wrook + pos <= 64 && input[pos + wrook] == 0);
+        } catch (Exception ignored) {
+        }
+        wrook = 0;
+        try {
+          do {
+            wrook = wrook - 8;
+            if (wrook + pos >= 0 && input[pos + wrook] == 3) {
+              return true;
+            }
+          } while (wrook + pos >= 0 && input[pos + wrook] == 0);
+        } catch (Exception ignored) {
         }// könig
-        if (!schach) {
-          int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
-          int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
-          boolean[] wkein_limit_k = {false, true, false, false, false, false, true, false};
-          for (int i = 0; i < 8; i++) {
-            if (wkein_limit_k[i]) {
+        int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
+        int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
+        boolean[] wkein_limit_k = {false, true, false, false, false, false, true, false};
+        for (int i = 0; i < 8; i++) {
+          if (wkein_limit_k[i]) {
+            try {
+              if (input[pos + wbewegung_k[i]] == 1) {
+                return true;
+              }
+            } catch (Exception ignored) {
+            }
+          } else {
+            if ((pos + wlimit_k[i]) % 8 != 0) {
               try {
                 if (input[pos + wbewegung_k[i]] == 1) {
-                  schach = true;
+                  return true;
                 }
               } catch (Exception ignored) {
               }
-            } else {
-              if ((pos + wlimit_k[i]) % 8 != 0) {
-                try {
-                  if (input[pos + wbewegung_k[i]] == 1) {
-                    schach = true;
-                  }
-                } catch (Exception ignored) {
-                }
-              }
             }
           }
+
         }//bauer
-        if (!schach) {
-          try {
-            if (input[pos - 9] == 6) {
-              schach = true;
-            }
-          } catch (Exception ignored) {
+        try {
+          if (input[pos - 9] == 6) {
+            return true;
           }
-          try {
-            if (input[pos + 7] == 6) {
-              schach = true;
-            }
-          } catch (Exception ignored) {
+        } catch (Exception ignored) {
+        }
+        try {
+          if (input[pos + 7] == 6) {
+            return true;
           }
+        } catch (Exception ignored) {
         }//Queen
-        if (!schach) {
-          boolean wdame_b = true;
-          int wdame = 0;
-          int[] wlimits_d = {-7, -7, 0, 0};
-          int[] wbewegung_d = {9, -7, -9, 7};
-          for (int i = 0; i < 4; i++) {
-            wdame_b = true;
-            wdame = 0;
-            if ((pos + wdame + wlimits_d[i]) % 8 != 0) {
-              wdame = wdame + wbewegung_d[i];
+        boolean wdame_b = true;
+        int wdame = 0;
+        int[] wlimits_d = {-7, -7, 0, 0};
+        int[] wbewegung_d = {9, -7, -9, 7};
+        for (int i = 0; i < 4; i++) {
+          wdame_b = true;
+          wdame = 0;
+          if ((pos + wdame + wlimits_d[i]) % 8 != 0) {
+            wdame = wdame + wbewegung_d[i];
+          }
+          while (wdame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
+            if (pos + wdame < 0 || pos + wdame > 63) {
+              break;
             }
-            while (wdame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
-              if (pos + wdame < 0 || pos + wdame > 63) {
+            if ((pos + wdame + wlimits_d[i]) % 8 == 0 || input[pos + wdame] != 0) {
+              if (input[pos + wdame] == 2) {
+                return true;
+              }
+              wdame_b = false;
+            }
+            wdame = wdame + wbewegung_d[i];
+          }
+        }
+        boolean wqueen_b = true;
+        int wqueen = 0;
+        int[] wlimits_q = {-7, 0};
+        int[] wbewegung_q = {1, -1};
+        for (int i = 0; i < 2; i++) {
+          wqueen_b = true;
+          wqueen = 0;
+          if ((pos + wqueen + wlimits_q[i]) % 8 != 0) {
+            wqueen = wqueen + wbewegung_q[i];
+          }
+          while (wqueen_b) {
+            try {
+              if (pos + wqueen < 0 || pos + wqueen > 63) {
                 break;
               }
-              if ((pos + wdame + wlimits_d[i]) % 8 == 0 || input[pos + wdame] != 0) {
-                if (input[pos + wdame] == 2) {
-                  schach = true;
+              if ((pos + wqueen + wlimits_q[i]) % 8 == 0 || input[pos + wqueen] != 0) {
+                if (input[pos + wqueen] == 2) {
+                  return true;
                 }
-                wdame_b = false;
+                wqueen_b = false;
               }
-              wdame = wdame + wbewegung_d[i];
-            }
-          }
-          boolean wqueen_b = true;
-          int wqueen = 0;
-          int[] wlimits_q = {-7, 0};
-          int[] wbewegung_q = {1, -1};
-          for (int i = 0; i < 2; i++) {
-            wqueen_b = true;
-            wqueen = 0;
-            if ((pos + wqueen + wlimits_q[i]) % 8 != 0) {
               wqueen = wqueen + wbewegung_q[i];
-            }
-            while (wqueen_b) {
-              try {
-                if (pos + wqueen < 0 || pos + wqueen > 63) {
-                  break;
-                }
-                if ((pos + wqueen + wlimits_q[i]) % 8 == 0 || input[pos + wqueen] != 0) {
-                  if (input[pos + wqueen] == 2) {
-                    schach = true;
-                  }
-                  wqueen_b = false;
-                }
-                wqueen = wqueen + wbewegung_q[i];
-              } catch (Exception ignored) {
-              }
+            } catch (Exception ignored) {
             }
           }
-          wqueen = 0;
-          try {
-            do {
-              wqueen = wqueen + 8;
-              if (input[pos + wqueen] == 2) {
-                schach = true;
-              }
-            } while (wqueen + pos <= 64 && input[pos + wqueen] == 0);
-          } catch (Exception ignored) {
-          }
-          wqueen = 0;
-          try {
-            do {
-              wqueen = wqueen - 8;
-              if (input[pos + wqueen] == 2) {
-                schach = true;
-              }
-            } while (wqueen + pos >= 0 && input[pos + wqueen] == 0);
-          } catch (Exception ignored) {
-          }
+        }
+        wqueen = 0;
+        try {
+          do {
+            wqueen = wqueen + 8;
+            if (input[pos + wqueen] == 2) {
+              return true;
+            }
+          } while (wqueen + pos <= 64 && input[pos + wqueen] == 0);
+        } catch (Exception ignored) {
+        }
+        wqueen = 0;
+        try {
+          do {
+            wqueen = wqueen - 8;
+            if (input[pos + wqueen] == 2) {
+              return true;
+            }
+          } while (wqueen + pos >= 0 && input[pos + wqueen] == 0);
+        } catch (Exception ignored) {
         }
       } else {
         int[] springer = {-17, -15, -10, -6, 6, 10, 15, 17};
@@ -520,194 +510,183 @@ public class Main {
           } else {
             try {
               if (input[pos + springer[i]] == 11) {
-                schach = true;
+                return true;
               }
             } catch (Exception ignored) {
             }
           }
         }//läufer check
-        if (!schach) {
-          boolean wbishop_b = true;
-          int wbishop = 0;
-          int[] wlimits = {-7, -7, 0, 0};
-          int[] wbewegung = {9, -7, -9, 7};
-          for (int i = 0; i < 4; i++) {
-            wbishop_b = true;
-            wbishop = 0;
-            if ((pos + wbishop + wlimits[i]) % 8 != 0) {
-              wbishop = wbishop + wbewegung[i];
+        boolean wbishop_b = true;
+        int wbishop = 0;
+        int[] wlimits = {-7, -7, 0, 0};
+        int[] wbewegung = {9, -7, -9, 7};
+        for (int i = 0; i < 4; i++) {
+          wbishop_b = true;
+          wbishop = 0;
+          if ((pos + wbishop + wlimits[i]) % 8 != 0) {
+            wbishop = wbishop + wbewegung[i];
+          }
+          while (wbishop_b) {   //Algorithmus zur Ausrechnung der Felder des Bischofs
+            if (pos + wbishop < 0 || pos + wbishop > 63) {
+              break;
             }
-            while (wbishop_b) {   //Algorithmus zur Ausrechnung der Felder des Bischofs
-              if (pos + wbishop < 0 || pos + wbishop > 63) {
-                break;
+            if ((pos + wbishop + wlimits[i]) % 8 == 0 || input[pos + wbishop] != 0) {
+              if (input[pos + wbishop] == 10) {
+                return true;
               }
-              if ((pos + wbishop + wlimits[i]) % 8 == 0 || input[pos + wbishop] != 0) {
-                if (input[pos + wbishop] == 10) {
-                  schach = true;
-                  break;
-                }
-                wbishop_b = false;
-              }
-              wbishop = wbishop + wbewegung[i];
+              wbishop_b = false;
             }
+            wbishop = wbishop + wbewegung[i];
           }
         }// turm
-        if (!schach) {
-          boolean wrook_b = true;
-          int wrook = 0;
-          int[] wlimits_r = {-7, 0};
-          int[] wbewegung_r = {1, -1};
-          for (int i = 0; i < 2; i++) {
-            wrook_b = true;
-            if ((pos + wrook + wlimits_r[i]) % 8 != 0) {
-              wrook = wbewegung_r[i];
-            } else {
-              wrook = 0;
-            }
-            while (wrook_b) {
-              if (pos + wrook < 0 || pos + wrook > 63) {
-                break;
-              }
-              if ((pos + wrook + wlimits_r[i]) % 8 == 0 || input[pos + wrook] != 0) {
-                if (input[pos + wrook] == 9) {
-                  schach = true;
-                }
-                wrook_b = false;
-              }
-              wrook = wrook + wbewegung_r[i];
-            }
-          }
+        boolean wrook_b = true;
+        int wrook = 0;
+        int[] wlimits_r = {-7, 0};
+        int[] wbewegung_r = {1, -1};
+        for (int i = 0; i < 2; i++) {
+          wrook_b = true;
           wrook = 0;
-          try {
-            do {
-              wrook = wrook + 8;
-              if (wrook + pos <= 64 && input[pos + wrook] == 9) {
-                schach = true;
-              }
-            } while (wrook + pos <= 64 && input[pos + wrook] == 0);
-          } catch (Exception ignored) {
+          if ((pos + wrook + wlimits_r[i]) % 8 != 0) {
+            wrook = wbewegung_r[i];
+          } else {
+            wrook = 0;
           }
-          wrook = 0;
-          try {
-            do {
-              wrook = wrook - 8;
-              if (wrook + pos >= 0 && input[pos + wrook] == 9) {
-                schach = true;
+          while (wrook_b) {
+            if (pos + wrook < 0 || pos + wrook > 63) {
+              break;
+            }
+            if ((pos + wrook + wlimits_r[i]) % 8 == 0 || input[pos + wrook] != 0) {
+              if (input[pos + wrook] == 9) {
+                return true;
               }
-            } while (wrook + pos >= 0 && input[pos + wrook] == 0);
-          } catch (Exception ignored) {
+              wrook_b = false;
+            }
+            wrook = wrook + wbewegung_r[i];
           }
+        }
+        wrook = 0;
+        try {
+          do {
+            wrook = wrook + 8;
+            if (wrook + pos <= 64 && input[pos + wrook] == 9) {
+              return true;
+            }
+          } while (wrook + pos <= 64 && input[pos + wrook] == 0);
+        } catch (Exception ignored) {
+        }
+        wrook = 0;
+        try {
+          do {
+            wrook = wrook - 8;
+            if (wrook + pos >= 0 && input[pos + wrook] == 9) {
+              return true;
+            }
+          } while (wrook + pos >= 0 && input[pos + wrook] == 0);
+        } catch (Exception ignored) {
         }// könig
-        if (!schach) {
-          int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
-          int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
-          boolean[] wkein_limit_k = {false, true, false, false, false, false, true, false};
-          for (int i = 0; i < 8; i++) {
-            if (wkein_limit_k[i]) {
+        int[] wbewegung_k = {-9, -8, -7, -1, 1, 7, 8, 9};
+        int[] wlimit_k = {0, 9, -7, 0, -7, 0, 9, -7};
+        boolean[] wkein_limit_k = {false, true, false, false, false, false, true, false};
+        for (int i = 0; i < 8; i++) {
+          if (wkein_limit_k[i]) {
+            try {
+              if (input[pos + wbewegung_k[i]] == 7) {
+                return true;
+              }
+            } catch (Exception ignored) {
+            }
+          } else {
+            if ((pos + wlimit_k[i]) % 8 != 0) {
               try {
                 if (input[pos + wbewegung_k[i]] == 7) {
-                  schach = true;
+                  return true;
                 }
               } catch (Exception ignored) {
-              }
-            } else {
-              if ((pos + wlimit_k[i]) % 8 != 0) {
-                try {
-                  if (input[pos + wbewegung_k[i]] == 7) {
-                    schach = true;
-                  }
-                } catch (Exception ignored) {
-                }
               }
             }
           }
         }//bauer
-        if (!schach) {
-          try {
-            if (input[pos - 7] == 12) {
-              schach = true;
-            }
-          } catch (Exception ignored) {
+        try {
+          if (input[pos - 7] == 12) {
+            return true;
           }
-          try {
-            if (input[pos + 9] == 12) {
-              schach = true;
-            }
-          } catch (Exception ignored) {
+        } catch (Exception ignored) {
+        }
+        try {
+          if (input[pos + 9] == 12) {
+            return true;
           }
+        } catch (Exception ignored) {
         }// Queen
-        if (!schach) {
-          boolean wdame_b = true;
-          int wdame = 0;
-          int[] wlimits_d = {-7, -7, 0, 0};
-          int[] wbewegung_d = {9, -7, -9, 7};
-          for (int i = 0; i < 4; i++) {
-            wdame_b = true;
-            wdame = 0;
-            if ((pos + wdame + wlimits_d[i]) % 8 != 0) {
-              wdame = wdame + wbewegung_d[i];
-            }
-            while (wdame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
-              if (pos + wdame < 0 || pos + wdame > 63) {
-                break;
-              }
-              if ((pos + wdame + wlimits_d[i]) % 8 == 0 || input[pos + wdame] != 0) {
-                if (input[pos + wdame] == 8) {
-                  schach = true;
-                }
-                wdame_b = false;
-              }
-              wdame = wdame + wbewegung_d[i];
-            }
+        boolean wdame_b = true;
+        int wdame = 0;
+        int[] wlimits_d = {-7, -7, 0, 0};
+        int[] wbewegung_d = {9, -7, -9, 7};
+        for (int i = 0; i < 4; i++) {
+          wdame_b = true;
+          wdame = 0;
+          if ((pos + wdame + wlimits_d[i]) % 8 != 0) {
+            wdame = wdame + wbewegung_d[i];
           }
-          boolean wqueen_b = true;
-          int wqueen = 0;
-          int[] wlimits_q = {-7, 0};
-          int[] wbewegung_q = {1, -1};
-          for (int i = 0; i < 2; i++) {
-            wqueen_b = true;
-            wqueen = 0;
-            if ((pos + wqueen + wlimits_q[i]) % 8 != 0) {
-              wqueen = wqueen + wbewegung_q[i];
+          while (wdame_b) {   //Algorithmus zur Ausrachnung der Felder des Bischofs
+            if (pos + wdame < 0 || pos + wdame > 63) {
+              break;
             }
-            while (wqueen_b) {
-              if (pos + wqueen < 0 || pos + wqueen > 63) {
-                break;
+            if ((pos + wdame + wlimits_d[i]) % 8 == 0 || input[pos + wdame] != 0) {
+              if (input[pos + wdame] == 8) {
+                return true;
               }
-              if ((pos + wqueen + wlimits_q[i]) % 8 == 0 || input[pos + wqueen] != 0) {
-                if (input[pos + wqueen] == 8) {
-                  schach = true;
-                }
-                wqueen_b = false;
-              }
-              wqueen = wqueen + wbewegung_q[i];
+              wdame_b = false;
             }
-          }
-          wqueen = 0;
-          try {
-            do {
-              wqueen = wqueen + 8;
-              if (wqueen + pos <= 64 && input[pos + wqueen] == 8) {
-                schach = true;
-              }
-            } while (wqueen + pos <= 64 && input[pos + wqueen] == 0);
-          } catch (Exception ignored) {
-          }
-          wqueen = 0;
-          try {
-            do {
-              wqueen = wqueen - 8;
-              if (wqueen + pos >= 0 && input[pos + wqueen] == 8) {
-                schach = true;
-              }
-            } while (wqueen + pos >= 0 && input[pos + wqueen] == 0);
-          } catch (Exception ignored) {
+            wdame = wdame + wbewegung_d[i];
           }
         }
+        boolean wqueen_b = true;
+        int wqueen = 0;
+        int[] wlimits_q = {-7, 0};
+        int[] wbewegung_q = {1, -1};
+        for (int i = 0; i < 2; i++) {
+          wqueen_b = true;
+          wqueen = 0;
+          if ((pos + wqueen + wlimits_q[i]) % 8 != 0) {
+            wqueen = wqueen + wbewegung_q[i];
+          }
+          while (wqueen_b) {
+            if (pos + wqueen < 0 || pos + wqueen > 63) {
+              break;
+            }
+            if ((pos + wqueen + wlimits_q[i]) % 8 == 0 || input[pos + wqueen] != 0) {
+              if (input[pos + wqueen] == 8) {
+                return true;
+              }
+              wqueen_b = false;
+            }
+            wqueen = wqueen + wbewegung_q[i];
+          }
+        }
+        wqueen = 0;
+        try {
+          do {
+            wqueen = wqueen + 8;
+            if (wqueen + pos <= 64 && input[pos + wqueen] == 8) {
+              return true;
+            }
+          } while (wqueen + pos <= 64 && input[pos + wqueen] == 0);
+        } catch (Exception ignored) {
+        }
+        wqueen = 0;
+        try {
+          do {
+            wqueen = wqueen - 8;
+            if (wqueen + pos >= 0 && input[pos + wqueen] == 8) {
+              return true;
+            }
+          } while (wqueen + pos >= 0 && input[pos + wqueen] == 0);
+        } catch (Exception ignored) {
+        }
       }
-      return schach;
+      return false;
     } else {
-      System.out.println("Kein Schachfeld!");
       return true;
     }
   }
