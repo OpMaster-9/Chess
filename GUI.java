@@ -147,7 +147,7 @@ public class GUI{
                                     }
                                 }
                             }
-                            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
+                            if (Main.stalemateTest(Main.brett, Main.amZug)) {
                                 indicator.setText("Remis");
                                 System.out.println("Remis");
                                 Main.writeToFile("log.txt","Remis");
@@ -198,8 +198,11 @@ public class GUI{
                             if(Main.amZug == 1 && bot) {
                                 bot = false;
                                 Thread thread = new Thread(() -> {
-                                    botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, true,Integer.MIN_VALUE,Integer.MAX_VALUE),3);
-                                    System.out.println(Bot.evaluateBoard(Main.brett,1));
+                                    if (Bot.endgame){
+                                        botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 10, true, Integer.MIN_VALUE, Integer.MAX_VALUE), 3);
+                                    }else {
+                                        botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, true, Integer.MIN_VALUE, Integer.MAX_VALUE), 3);
+                                    }
                                     System.out.println(botMove[0]);
                                     GUI.simulateButtonPress(botMove[1]);
                                     GUI.simulateButtonPress(botMove[2]);
@@ -319,7 +322,7 @@ public class GUI{
                     }
                 }
             }
-            if (Main.stalemateTest(Main.brett, Main.findKing(Main.brett, Main.amZug))) {
+            if (Main.stalemateTest(Main.brett, Main.amZug)) {
                 indicator.setText("Remis");
                 System.out.println("Remis");
                 Main.writeToFile("log.txt","Remis");

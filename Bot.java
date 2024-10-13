@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Bot {
-  private static boolean endgame = false;
+  public static boolean endgame = false;
   private static int[][] piecePositionTable = {
          {20, 20, -10, -20, -30, -30, -30, -30,
                  30, 20, -20, -30, -40, -40, -40, -40,
@@ -59,14 +59,14 @@ public class Bot {
                  0, 10, -5, 0, 5, 10, 50, 100,
                  0, 5, 5, 0, 5, 10, 50, 100
           },
-         {-50, -30, -30, -30, -30, -50,
+         {-50, -30, -30, -30, -30, -30, -30, -50,
                  -40, -20, -10, -10, -10, -10, -30, -30,
                  -30, -10, 20, 30, 30, 20, 0, -30,
                  -20, 0, 0, 30, 40, 40, 0, -30,
                  -20, 0, 0, 30, 40, 40, 0, -30,
                  -30, -10, 20, 30, 30, 20, 0, -30,
                  -40, -20, -10, -10, -10, -10, -30, -30,
-                 -50, -30, -30, -30, -30, -50
+                 -50, -30, -30, -30, -30, -30, -30, -50
          }
   };
   private static int materialCount(int[] board){
@@ -106,7 +106,7 @@ public class Bot {
     return amount;
   }
   private static boolean endgameDetection(int[] board){
-      return countMajorPieces(board) > 3 && materialCount(board) > 15;
+      return countMajorPieces(board) < 2 && materialCount(board) < 14;
   }
   private static int piecePositionEvaluation(int[] board, int colour){
     int score = 0;
@@ -140,7 +140,7 @@ public class Bot {
     score += piecePositionEvaluation(board,colour);
     return score;
   }
-  public List<int[]> allMoves(int[] input, int colour){
+  public static List<int[]> allMoves(int[] input, int colour){
     List<int[]> allMoves = new ArrayList<>();
     for (int i = 0; i < 64; i++) {
       if (Main.findColour(input,i) == colour){

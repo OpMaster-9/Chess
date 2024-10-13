@@ -23,14 +23,14 @@ public class Main {
           4, 6, 0, 0, 0, 0, 12, 10,
           5, 6, 0, 0, 0, 0, 12, 11,
           3, 6, 0, 0, 0, 0, 12, 9};
-  public static int[] brett = {3, 6, 0, 0, 0, 0, 12, 9,
-          5, 6, 0, 0, 0, 0, 12, 11,
-          4, 6, 0, 0, 0, 0, 12, 10,
-          2, 6, 0, 0, 0, 0, 12, 8,
-          1, 6, 0, 0, 0, 0, 12, 7,
-          4, 6, 0, 0, 0, 0, 12, 10,
-          5, 6, 0, 0, 0, 0, 12, 11,
-          3, 6, 0, 0, 0, 0, 12, 9
+  public static int[] brett = {3, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0,
+          1, 0, 0, 0, 0, 0, 0, 7,
+          0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0
   };
   public static int amZug = 0;
   public static int moveCounter = 0;
@@ -350,7 +350,6 @@ public class Main {
             }
           }
         }// turm
-        System.out.println("turm");
         boolean wrook_b = true;
         int wrook = 0;
         int[] wlimits_r = {-7, 0};
@@ -374,7 +373,6 @@ public class Main {
             wrook = wrook + wbewegung_r[i];
           }
         }
-        System.out.println("turm 2");
         wrook = 0;
         try {
           do {
@@ -762,12 +760,7 @@ public class Main {
     if (check(input, findKing(input,colour), colour)) {
       return false;
     }
-    for (int i = 0; i < 64; i++) {
-      if (!MovementCheck.wohinGehtBittiBitti(input, i, colour).isEmpty()) {
-        return false;
-      }
-    }
-    return true;
+      return Bot.allMoves(input, colour).isEmpty();
   }
 
   public static String figur(int[] input, int pos) {
