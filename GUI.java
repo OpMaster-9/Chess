@@ -32,30 +32,40 @@ public class GUI{
         fenster.setResizable(false);
         fenster.setLayout(null);
         fenster.setSize(900,1000);
-        ImageIcon img = new ImageIcon("chess.png");
-        fenster.setIconImage(img.getImage());
+        fenster.getContentPane().setBackground(new Color(50,50,50));
+
+        Font font = new Font("Arial", Font.PLAIN, 20);
 
         indicator.setVisible(true);
         indicator.setEditable(false);
         indicator.setFocusable(false);
-        indicator.setFont(new Font("Arial", Font.PLAIN, 20));
+        indicator.setFont(font);
         indicator.setBounds(50,25,400,50);
+        indicator.setBorder(null);
+        indicator.setBackground(new Color(100,100,100));
+        indicator.setForeground(new Color(200,200,200));
         fenster.add(indicator);
 
         timer_w.setText("Weiß: " + white.getFormattedTime());
         timer_w.setVisible(true);
         timer_w.setEditable(false);
         timer_w.setFocusable(false);
-        timer_w.setFont(new Font("Arial", Font.PLAIN, 20));
+        timer_w.setFont(font);
+        timer_w.setBackground(new Color(100,100,100));
+        timer_w.setForeground(new Color(200,200,200));
         timer_w.setBounds(475,25,175,50);
+        timer_w.setBorder(null);
         fenster.add(timer_w);
 
         timer_b.setText("Schwarz: " + white.getFormattedTime());
         timer_b.setVisible(true);
         timer_b.setEditable(false);
         timer_b.setFocusable(false);
-        timer_b.setFont(new Font("Arial", Font.PLAIN, 20));
+        timer_b.setFont(font);
+        timer_b.setBackground(new Color(100,100,100));
+        timer_b.setForeground(new Color(200,200,200));
         timer_b.setBounds(675,25,175,50);
+        timer_b.setBorder(null);
         fenster.add(timer_b);
 
         JPanel panel = new JPanel();
