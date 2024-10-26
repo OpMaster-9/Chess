@@ -19,9 +19,6 @@ public class GUIOnline{
     private static int feld1 = 0;
     private static int feld2 = 0;
     private static boolean feld1_b = true;
-    private static int feld12 = 0;
-    private static int feld22 = 0;
-    private static boolean feld1_b2 = true;
     private static ChessTimer white = new ChessTimer(10, 0);
     private static ChessTimer black = new ChessTimer(10, 0);
     private static JButton[] feld = new JButton[64];
@@ -30,7 +27,7 @@ public class GUIOnline{
     private static String move;
     public void GUI() throws IOException {
 
-        Socket socket = new Socket(Chooser.ip, 12345); // Connect to server
+        Socket socket = new Socket(Chooser.ip, Integer.parseInt(Chooser.port)); // Connect to server
         DataInputStream input = new DataInputStream(socket.getInputStream());
         DataOutputStream output = new DataOutputStream(socket.getOutputStream());
         clientColour = Integer.parseInt(input.readUTF());
