@@ -27,7 +27,7 @@ public class GUIOnline{
     private static String move;
     public void GUI() throws IOException {
 
-        Socket socket = new Socket(Chooser.ip, Integer.parseInt(Chooser.port)); // Connect to server
+        Socket socket = new Socket(Chooser.ipAdress, Integer.parseInt(Chooser.port1)); // Connect to server
         DataInputStream input = new DataInputStream(socket.getInputStream());
         DataOutputStream output = new DataOutputStream(socket.getOutputStream());
         clientColour = Integer.parseInt(input.readUTF());

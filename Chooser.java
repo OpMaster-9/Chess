@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class Chooser {
     public static boolean botActivated = false;
-    public static String ip;
-    public static String port;
+    public static String ipAdress;
+    public static String port1;
     public static void GUI (){
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,31 +62,6 @@ public class Chooser {
         });
         frame.add(local);
 
-        JButton online = new JButton();
-        online.setVisible(true);
-        online.setBounds(25, 175, 450, 50);
-        online.setBackground(new Color(100, 100, 100));
-        online.setForeground(new Color(200, 200, 200));
-        online.setBorder(null);
-        online.setFont(font);
-        online.setText("Multiplayer (online)");
-        online.setFocusable(false);
-        online.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Main.writeToFile("log.txt", "Neues Game");
-                Main.clearFile("FEN.txt");
-                try {
-                    GUIOnline game = new GUIOnline();
-                    game.GUI();
-                } catch (IOException ex) {
-                    System.out.println("Error");
-                }
-                frame.setVisible(false);
-            }
-        });
-        frame.add(online);
-
         JTextField ip = new JTextField();
         ip.setVisible(true);
         ip.setBounds(25,250,225,50);
@@ -106,6 +81,33 @@ public class Chooser {
         port.setFont(font);
         port.setText("Port");
         frame.add(port);
+
+        JButton online = new JButton();
+        online.setVisible(true);
+        online.setBounds(25, 175, 450, 50);
+        online.setBackground(new Color(100, 100, 100));
+        online.setForeground(new Color(200, 200, 200));
+        online.setBorder(null);
+        online.setFont(font);
+        online.setText("Multiplayer (online)");
+        online.setFocusable(false);
+        online.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ipAdress = ip.getText();
+                port1 = port.getText();
+                Main.writeToFile("log.txt", "Neues Game");
+                Main.clearFile("FEN.txt");
+                try {
+                    GUIOnline game = new GUIOnline();
+                    game.GUI();
+                } catch (IOException ex) {
+                    System.out.println("Error");
+                }
+                frame.setVisible(false);
+            }
+        });
+        frame.add(online);
 
         frame.setVisible(true);
     }
