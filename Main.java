@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
 
-  //TODO: Bot verbessern, Bug fixes:Bot making invalid moves
   public static boolean bot = true;
   public static boolean isRunning = true;
   public static boolean richtig = true;
@@ -38,9 +37,7 @@ public class Main {
   public static boolean pawnMove = false;
 
   public static void main(String[] args) {
-    writeToFile("log.txt", "Neues Game");
-    clearFile("FEN.txt");
-    GUI.GUI();
+    Chooser.GUI();
   }
 
   public static int[] move(int[] input, int pos1, int pos2,int colour) {

@@ -2,13 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
-public class GUI{
+public class GUIOnline{
     private static JTextField timer_b = new JTextField();
     private static JTextField timer_w  = new JTextField();
     private static int feld1 = 0;
@@ -20,15 +25,25 @@ public class GUI{
     private static ChessTimer white = new ChessTimer(10, 0);
     private static ChessTimer black = new ChessTimer(10, 0);
     private static JButton[] feld = new JButton[64];
-    private static boolean bot = true;
-    private static int[] botMove = new int[3];
-    private static boolean refresh = false;
     private static JTextField indicator = new JTextField("Weiß am Zug.");
-    private static Bot bot1 = new Bot();
-    public static void GUI(){
+    private static int clientColour;
+    private static String move;
+    public void GUI() throws IOException {
+
+        Socket socket = new Socket(Chooser.ip, 12345); // Connect to server
+        DataInputStream input = new DataInputStream(socket.getInputStream());
+        DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+        clientColour = Integer.parseInt(input.readUTF());
+
+        System.out.println("connected");
+
         JFrame fenster = new JFrame();
         fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenster.setTitle("Schach");
+        if (clientColour == 0){
+            fenster.setTitle("Schach(white)");
+        }else {
+            fenster.setTitle("Schach(black)");
+        }
         fenster.setResizable(false);
         fenster.setLayout(null);
         fenster.setSize(900,1000);
@@ -93,7 +108,7 @@ public class GUI{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         JButton clickedButton = (JButton) e.getSource(); // Der Button, der das Event ausgelöst hat
-                        if(Main.isRunning && Main.amZug == 0 || Main.isRunning && !Chooser.botActivated) {
+                        if(Main.isRunning && Main.amZug == clientColour) {
                             Main.richtig = true;
                             if (feld1_b) {
                                 feld1 = index;
@@ -128,13 +143,17 @@ public class GUI{
                                 int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
                                 Main.writeToFile("log.txt",Main.getFEN(false));
                                 Main.writeToFile("log.txt",Main.zahlZuFeld(feld1) + ", " + Main.zahlZuFeld(feld2));
-                                if (Chooser.botActivated) {
-                                    Main.brett = Main.move(Main.brett, feld1, feld2, 0);
-                                }else {
-                                    Main.brett = Main.move(Main.brett,feld1,feld2,Main.amZug);
-                                }
+                                Main.brett = Main.move(Main.brett,feld1,feld2,clientColour);
+                                System.out.println("made move");
                                 if (Main.richtig) {
+                                    System.out.println("sending move");
                                     Main.writeToFile("FEN.txt", Main.getFEN(true));
+                                    try {
+                                        output.writeUTF(intArrayToString(Main.brett) + " " + intArrayToString(Main.letzte) + " " + booleanArrayToString(Main.hasMoved) + " " + Main.moveCounter + " " + Main.movementRule);
+                                        System.out.println("sent move");
+                                    } catch (IOException ex) {
+                                        System.out.println("Error while sending.");
+                                    }
                                 }
                                 if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
                                     Main.isRunning = false;
@@ -209,23 +228,6 @@ public class GUI{
                                     }
                                 }
                             }
-                            if (Chooser.botActivated) {
-                                if (Main.amZug == 1 && bot) {
-                                    bot = false;
-                                    Thread thread = new Thread(() -> {
-                                        botMove = Arrays.copyOf(bot1.miniMax(Main.brett, 1, 5, true, Integer.MIN_VALUE, Integer.MAX_VALUE), 3);
-                                        System.out.println(botMove[0]);
-                                        GUI.simulateButtonPress(botMove[1]);
-                                        GUI.simulateButtonPress(botMove[2]);
-                                    });
-                                    thread.start();
-
-                                } else {
-                                    if (Main.amZug == 0) {
-                                        bot = true;
-                                    }
-                                }
-                            }
                         }
                     }
                 });
@@ -255,8 +257,35 @@ public class GUI{
                 }
             }
         }).start();
+        new Thread(() -> {
+            while (Main.isRunning) {
+                try {
+                    String inputString = input.readUTF();
+                    String[] parts = inputString.split(" ");
+                    Main.brett = stringToIntArray(parts[0]);
+                    Main.letzte = stringToIntArray(parts[1]);
+                    Main.hasMoved = stringToBooleanArray(parts[2]);
+                    Main.moveCounter = Integer.parseInt(parts[3]);
+                    Main.movementRule = Integer.parseInt(parts[4]);
+                    if (Main.amZug == 0) {
+                        Main.amZug = 1;
+                    } else {
+                        Main.amZug = 0;
+                    }
+                    refresh();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }).start();
+
     }
-    public static void refresh(){
+    public void refresh(){
         int l = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -265,123 +294,47 @@ public class GUI{
             }
             l -= 63;
         }
+        white.stop();
+        black.stop();
+        if (Main.amZug == 0) {
+            indicator.setText("Weiß am Zug.");
+            white.start();
+        } else {
+            indicator.setText("Schwarz am Zug.");
+            black.start();
+        }
     }
     public static void pressButton(int pos){
         feld[pos].doClick();
     }
-    public static void simulateButtonPress(int index){
-        if(Main.isRunning) {
-            Main.richtig = true;
-            if (feld1_b2) {
-                feld12 = index;
-                feld1_b2 = false;
-                if (!Objects.equals(feld[index].getBackground(), new Color(250, 128, 114))) {
-                    if (Objects.equals(feld[index].getBackground(), new Color(240, 236, 212))) {
-                        feld[index].setBackground(new Color(170, 168, 153));
-                    } else {
-                        feld[index].setBackground(new Color(81, 99, 57));
-                    }
-                }
-                java.util.List<Integer> possibilities = MovementCheck.wohinGehtBittiBitti(Main.brett, index,Main.amZug);
-                List<Integer> possible = new ArrayList<>();
-                for (int m = 0; m < possibilities.size(); m++) {
-                    int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
-                    if (!Main.check(Main.moveWithoutCheck(temp, index, possibilities.get(m),Main.amZug), Main.findKing(temp, Main.amZug), Main.amZug)) {
-                        possible.add(possibilities.get(m));
-                    }
-                }
-                for (int k = 0; k < 64; k++) {
-                    if (possible.contains(k)) {
-                        if (Objects.equals(feld[k].getBackground(), new Color(240, 236, 212))) {
-                            feld[k].setBackground(new Color(170, 168, 153));
-                        } else {
-                            feld[k].setBackground(new Color(81, 99, 57));
-                        }
-                    }
-                }
-            } else {
-                feld22 = index;
-                feld1_b2 = true;
-                int[] temp = Arrays.copyOf(Main.brett, Main.brett.length);
-                Main.writeToFile("log.txt",Main.getFEN(false));
-                Main.writeToFile("log.txt",Main.zahlZuFeld(feld12) + ", " + Main.zahlZuFeld(feld22));
-                Main.brett = Main.move(Main.brett, feld12, feld22,1);
-                if (Main.richtig) {
-                    Main.writeToFile("FEN.txt", Main.getFEN(true));
-                }
-                if (Main.countOccurrences("FEN.txt",Main.getFEN(true)) >= 3){
-                    Main.isRunning = false;
-                    indicator.setText("Unentschieden durch Wiederholung.");
-                    Main.writeToFile("log.txt","Unentschieden durch Wiederholung.");
-                }
-                if (Main.movementRule >= 50){
-                    Main.isRunning = false;
-                    indicator.setText("Unentschieden durch 50 Zug regel.");
-                    Main.writeToFile("log.txt","Unentschieden durch 50 Zug regel.");
-                }
-                if (Main.richtig) {
-                    Main.letzte = Arrays.copyOf(temp, temp.length);
-                }
-                for (int k = 0; k < 64; k++) {
-                    int l = k;
-                    if ((k >= 8 && k < 16) || (k >= 24 && k < 32) || (k >= 40 && k < 48) || k >= 56){
-                        l++;
-                    }
-                    if (l % 2 == 0){
-                        feld[k].setBackground(new Color(240,236,212));
-                    }else {
-                        feld[k].setBackground(new Color(120,148,84));
-                    }
-                }
-            }
-            if (Main.stalemateTest(Main.brett, Main.amZug)) {
-                indicator.setText("Remis");
-                System.out.println("Remis");
-                Main.writeToFile("log.txt","Remis");
-                Main.isRunning = false;
-            }
-            if (Main.richtig && feld1_b2) {
-                if (Main.amZug == 0) {
-                    Main.amZug = 1;
-                } else {
-                    Main.amZug = 0;
-                }
-            }
-            int l = 0;
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    feld[l].setText(Main.figur(Main.brett, l));
-                    l += 8;
-                }
-                l -= 63;
-            }
-            white.stop();
-            black.stop();
-            if (Main.isRunning) {
-                if (Main.amZug == 0) {
-                    indicator.setText("Weiß am Zug.");
-                    white.start();
-                } else {
-                    indicator.setText("Schwarz am Zug.");
-                    black.start();
-                }
-            }
-            if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
-                feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250,128,114));
-                if (Main.mattTest(Main.brett, Main.amZug)) {
-                    if (Main.amZug == 0) {
-                        indicator.setText("Schwarz hat gewonnen");
-                        System.out.println("Schwarz hat gewonnen");
-                        Main.writeToFile("log.txt","Schwarz hat gewonnen");
-                        Main.isRunning = false;
-                    } else {
-                        indicator.setText("Weiß hat gewonnen.");
-                        System.out.println("Weiß hat gewonnen");
-                        Main.writeToFile("log.txt","Weiß hat gewonnen");
-                        Main.isRunning = false;
-                    }
-                }
+    public static String intArrayToString(int[] array) {
+        return Arrays.stream(array)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(","));
+    }
+    public static int[] stringToIntArray(String str) {
+        return Arrays.stream(str.split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+    }
+    public static String booleanArrayToString(boolean[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+            if (i < array.length - 1) {
+                sb.append(",");  // Append comma for all but the last element
             }
         }
+        return sb.toString();
     }
+
+    public static boolean[] stringToBooleanArray(String str) {
+        String[] parts = str.split(",");
+        boolean[] result = new boolean[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            result[i] = Boolean.parseBoolean(parts[i]);
+        }
+        return result;
+    }
+
 }
