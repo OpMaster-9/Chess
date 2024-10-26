@@ -297,9 +297,9 @@ public class GUIOnline{
                     pos++;
                 }
                 if (pos % 2 == 0){
-                    feld[Main.findKing(Main.brett,Main.amZug)].setBackground(new Color(240,236,212));
+                    feld[l].setBackground(new Color(240,236,212));
                 }else {
-                    feld[Main.findKing(Main.brett,Main.amZug)].setBackground(new Color(120,148,84));
+                    feld[l].setBackground(new Color(120,148,84));
                 }
                 l += 8;
             }
