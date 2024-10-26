@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -104,7 +105,6 @@ public class GUIOnline{
                 feld[l].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JButton clickedButton = (JButton) e.getSource(); // Der Button, der das Event ausgelöst hat
                         if(Main.isRunning && Main.amZug == clientColour) {
                             Main.richtig = true;
                             if (feld1_b) {
@@ -146,7 +146,7 @@ public class GUIOnline{
                                     System.out.println("sending move");
                                     Main.writeToFile("FEN.txt", Main.getFEN(true));
                                     try {
-                                        output.writeUTF(intArrayToString(Main.brett) + " " + intArrayToString(Main.letzte) + " " + booleanArrayToString(Main.hasMoved) + " " + Main.moveCounter + " " + Main.movementRule);
+                                        output.writeUTF(String.valueOf(feld1) + " " + String.valueOf(feld2));
                                         System.out.println("sent move");
                                     } catch (IOException ex) {
                                         System.out.println("Error while sending.");
@@ -257,13 +257,18 @@ public class GUIOnline{
         new Thread(() -> {
             while (Main.isRunning) {
                 try {
-                    String inputString = input.readUTF();
+                    String inputString = null;
+                    try {
+                        inputString = input.readUTF();
+                    } catch (EOFException e) {
+                        indicator.setText("Gegner hat das Spiel verlassen.");
+                        break;
+                    }
                     String[] parts = inputString.split(" ");
-                    Main.brett = stringToIntArray(parts[0]);
-                    Main.letzte = stringToIntArray(parts[1]);
-                    Main.hasMoved = stringToBooleanArray(parts[2]);
-                    Main.moveCounter = Integer.parseInt(parts[3]);
-                    Main.movementRule = Integer.parseInt(parts[4]);
+                    int move1 = Integer.parseInt(parts[0]);
+                    int move2 = Integer.parseInt(parts[1]);
+                    Main.brett = Main.move(Main.brett, move1, move2, Main.amZug);
+                    refresh();
                     if (Main.amZug == 0) {
                         Main.amZug = 1;
                     } else {
@@ -287,9 +292,21 @@ public class GUIOnline{
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 feld[l].setText(Main.figur(Main.brett, l));
+                int pos = l;
+                if ((pos >= 8 && pos < 16) || (pos >= 24 && pos < 32) || (pos >= 40 && pos < 48) || pos >= 56){
+                    pos++;
+                }
+                if (pos % 2 == 0){
+                    feld[Main.findKing(Main.brett,Main.amZug)].setBackground(new Color(240,236,212));
+                }else {
+                    feld[Main.findKing(Main.brett,Main.amZug)].setBackground(new Color(120,148,84));
+                }
                 l += 8;
             }
             l -= 63;
+        }
+        if (Main.check(Main.brett, Main.findKing(Main.brett, Main.amZug), Main.amZug)) {
+            feld[Main.findKing(Main.brett, Main.amZug)].setBackground(new Color(250, 128, 114));
         }
         white.stop();
         black.stop();

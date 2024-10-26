@@ -437,19 +437,14 @@ public class MovementCheck {
             }
           }
           try {
-            if ((!hasMoved[3] && !hasMoved[4]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && input[pos1 - 32] == 3 && !(Main.check(input, pos1, colour) && Main.check(input, pos1 - 8, colour) && Main.check(input, pos1 - 16, colour))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
-              if ((Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) {
-              } else {
-                wohin.add(pos1 - 16);
-              }
+            System.out.println(!hasMoved[3] + " " + !hasMoved[4] + " " + (input[pos1 - 8] == 0) + " " + (input[pos1 - 16] == 0) + " " + (input[pos1 - 24] == 0) + " " + (input[pos1 - 32] == 3) + " " + !Main.check(input, pos1, colour) + " " + !Main.check(input, pos1 - 8, colour) + " " + !Main.check(input, pos1 - 16, colour));
+            if ((!hasMoved[3] && !hasMoved[4]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && input[pos1 - 32] == 3 && !Main.check(input, pos1, colour) && !Main.check(input, pos1 - 8, colour) && !Main.check(input, pos1 - 16, colour)) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
+              wohin.add(pos1 - 16);
             }
           }catch (Exception ignored){}
           try {
-            if ((!hasMoved[3] && !hasMoved[5]) && (input[pos1 + 8] == 0 && input[pos1 + 16] == 0) && input[pos1 + 24] == 3 && !(Main.check(input, pos1, 1) && Main.check(input, pos1 + 8, 1) && Main.check(input, pos1 + 16, 1))) { //GELGUS
-              if ((Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) {
-              } else {
-                wohin.add(pos1 + 16);
-              }
+            if ((!hasMoved[3] && !hasMoved[5]) && (input[pos1 + 8] == 0 && input[pos1 + 16] == 0) && input[pos1 + 24] == 3 && !(Main.check(input, pos1, 1) && !Main.check(input, pos1 + 8, 1) && !Main.check(input, pos1 + 16, 1))) { //GELGUS
+              wohin.add(pos1 + 16);
             }
           }catch (Exception ignored){}
         }
@@ -481,19 +476,13 @@ public class MovementCheck {
             }
           }
           try {
-            if ((!hasMoved[0] && !hasMoved[1]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && input[pos1 - 32] == 9 && !(Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
-              if ((Main.check(input, pos1, 0) && Main.check(input, pos1 - 8, 0) && Main.check(input, pos1 - 16, 0))) {
-              } else {
-                wohin.add(pos1 - 16);
-              }
+            if ((!hasMoved[0] && !hasMoved[1]) && (input[pos1 - 8] == 0 && input[pos1 - 16] == 0 && input[pos1 - 24] == 0) && input[pos1 - 32] == 9 && !Main.check(input, pos1, 0) && !Main.check(input, pos1 - 8, 0) && !Main.check(input, pos1 - 16, 0)) { //AAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHH
+              wohin.add(pos1 - 16);
             }
           }catch (Exception ignored){}
           try {
-            if (!hasMoved[0] && !hasMoved[2] && input[pos1 + 8] == 0 && input[pos1 + 16] == 0 && input[pos1 + 24] == 9 && !(Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) { //GELGUS
-              if ((Main.check(input, pos1, 0) && Main.check(input, pos1 + 8, 0) && Main.check(input, pos1 + 16, 0))) {
-              } else {
-                wohin.add(pos1 + 16);
-              }
+            if (!hasMoved[0] && !hasMoved[2] && input[pos1 + 8] == 0 && input[pos1 + 16] == 0 && input[pos1 + 24] == 9 && !Main.check(input, pos1, 0) && !Main.check(input, pos1 + 8, 0) && !Main.check(input, pos1 + 16, 0)) { //GELGUS
+              wohin.add(pos1 + 16);
             }
           }catch (Exception ignored){}
         }
