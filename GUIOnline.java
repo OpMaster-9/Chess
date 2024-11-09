@@ -146,7 +146,7 @@ public class GUIOnline{
                                     System.out.println("sending move");
                                     Main.writeToFile("FEN.txt", Main.getFEN(true));
                                     try {
-                                        output.writeUTF(String.valueOf(feld1) + " " + String.valueOf(feld2));
+                                        output.writeUTF(String.valueOf(feld1) + " " + String.valueOf(feld2) + " " + String.valueOf(getMinutesAndSeconds(white.getRemainingTime())[0]) + " " + String.valueOf(getMinutesAndSeconds(white.getRemainingTime())[1]) + " " + String.valueOf(getMinutesAndSeconds(black.getRemainingTime())[0]) + " " + String.valueOf(getMinutesAndSeconds(black.getRemainingTime())[1]));
                                         System.out.println("sent move");
                                     } catch (IOException ex) {
                                         System.out.println("Error while sending.");
@@ -267,6 +267,12 @@ public class GUIOnline{
                     String[] parts = inputString.split(" ");
                     int move1 = Integer.parseInt(parts[0]);
                     int move2 = Integer.parseInt(parts[1]);
+                    int minutesWhite = Integer.parseInt(parts[2]);
+                    int secondsWhite = Integer.parseInt(parts[3]);
+                    int minutesBlack = Integer.parseInt(parts[4]);
+                    int secondsBlack = Integer.parseInt(parts[5]);
+                    white.setTime(minutesWhite,secondsWhite);
+                    black.setTime(minutesBlack,secondsBlack);
                     Main.brett = Main.move(Main.brett, move1, move2, Main.amZug);
                     refresh();
                     if (Main.amZug == 0) {
@@ -350,5 +356,10 @@ public class GUIOnline{
         }
         return result;
     }
-
+    public static int[] getMinutesAndSeconds(int totalSeconds) {
+        int[] result = new int[2];
+        result[0] = totalSeconds / 60;
+        result[1] = totalSeconds % 60;
+        return result;
+    }
 }
